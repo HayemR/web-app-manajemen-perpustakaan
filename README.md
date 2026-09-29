@@ -1,58 +1,86 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Perancangan Sistem Inventaris dan Peminjaman Perpustakaan Web
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Ini adalah repositori untuk sistem manajemen perpustakaan berbasis web. Proyek ini dibangun menggunakan **Laravel** sebagai *backend* (API & Logika Bisnis) dan **Vue.js + Vite** sebagai *frontend* (Antarmuka Interaktif).
 
-## About Laravel
+## 🛠️ Prasyarat Lingkungan (Prerequisites)
+Sebelum menjalankan proyek ini, pastikan komputermu sudah terinstal:
+- PHP (Minimal v8.2)
+- Composer
+- Node.js & NPM
+- Git
+- MySQL / MariaDB (XAMPP/Laragon/sejenisnya)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🚀 Panduan Instalasi (Setup Awal untuk Tim)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Ikuti langkah-langkah berikut secara berurutan setelah kamu diundang ke repositori ini:
 
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
+**1. Clone Repositori**
+Buka terminal dan *clone* *branch* `develop` (pusat pengembangan tim):
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone -b develop git@github.com:HayemR/web-app-manajemen-perpustakaan.git
+cd web-app-manajemen-perpustakaan
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+**2. Instalasi Dependensi Backend (Laravel)**
+Jalankan Composer untuk mengunduh semua *library* PHP yang dibutuhkan:
+```bash
+composer install
+```
 
-## Contributing
+**3. Instalasi Dependensi Frontend (Vue & Vite)**
+Jalankan NPM untuk mengunduh semua *library* JavaScript/Vue:
+```bash
+npm install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+**4. Konfigurasi Environment (.env)**
+File konfigurasi rahasia tidak ikut ter- *upload* ke Git. Kamu harus membuatnya sendiri dari file contoh yang disediakan:
+```bash
+cp .env.example .env
+```
+*Buka file `.env` di *code editor* kamu, lalu ubah bagian koneksi database sesuaikan dengan komputermu (buat *database* kosong bernama `perpus_db` di phpMyAdmin/DBeaver terlebih dahulu):*
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=perpus_db
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-## Code of Conduct
+**5. Generate App Key & Migrasi Database**
+Buat kunci keamanan Laravel dan jalankan migrasi untuk membuat tabel-tabel di *database*:
+```bash
+php artisan key:generate
+php artisan migrate
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## 💻 Cara Menjalankan Proyek (Development)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Karena kita menggunakan Laravel dan Vite secara bersamaan, kamu **wajib membuka 2 terminal** dan menjalankan kedua perintah ini secara bersamaan:
 
-## License
+**Terminal 1 (Backend - Server PHP):**
+```bash
+php artisan serve
+```
+*(Aplikasi bisa diakses di `http://127.0.0.1:8000`)*
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+**Terminal 2 (Frontend - Kompilasi Aset Vite):**
+```bash
+npm run dev
+```
+*(Biarkan terminal ini menyala. Ia akan otomatis me-refresh browser setiap kali kamu menyimpan file `.vue` atau `.js`)*
+
+---
+
+## 🌿 Aturan Git Flow (Penting!)
+- **JANGAN** pernah melakukan `git push` langsung ke *branch* `main` atau `develop`.
+- Selalu buat *branch* baru dari `develop` untuk setiap fitur yang kamu kerjakan.
+```bash
+# Contoh membuat branch untuk fitur login
+git checkout -b feature/auth-user
+```
