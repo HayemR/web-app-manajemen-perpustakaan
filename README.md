@@ -56,5 +56,5 @@ DB_PASSWORD=
 5. Jalankan migrasi
 
 ```bash
-php artisan migrate
+php artisan migrate:fresh
 ```
