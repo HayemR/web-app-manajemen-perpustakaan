@@ -58,3 +58,11 @@ DB_PASSWORD=
 ```bash
 php artisan migrate:fresh
 ```
+
+6. Jalankan pada tab terminal/command prompt yang berbeda
+```bash
+php artisan serve
+
+npm run dev
+
+```
