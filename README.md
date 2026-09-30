@@ -1,47 +1,50 @@
-# Perancangan Sistem Inventaris dan Peminjaman Perpustakaan Web
+# DigiNesh - Ganesha Library
 
-Ini adalah repositori untuk sistem manajemen perpustakaan berbasis web. Proyek ini dibangun menggunakan **Laravel** sebagai *backend* (API & Logika Bisnis) dan **Vue.js + Vite** sebagai *frontend* (Antarmuka Interaktif).
+**Kode Proyek:** EST-2026[cite: 4]
+**Jenis Proyek:** Pengembangan Sistem Informasi Perpustakaan (SIP)[cite: 4]
 
-## 🛠️ Prasyarat Lingkungan (Prerequisites)
-Sebelum menjalankan proyek ini, pastikan komputermu sudah terinstal:
-- PHP (Minimal v8.2)
-- Composer
-- Node.js & NPM
-- Git
-- MySQL / MariaDB (XAMPP/Laragon/sejenisnya)
+DigiNesh adalah sistem informasi perpustakaan digital yang memungkinkan petugas mendata buku dengan mudah melalui pemindaian ISBN, serta memungkinkan pemustaka (siswa) mengajukan peminjaman secara mandiri[cite: 4]. Sistem ini dirancang dengan arsitektur *frontend* dan *backend* yang terpisah[cite: 4].
 
----
+## 🚀 Baseline Teknologi
+*   **Backend:** Laravel 13 + PHP 8.4[cite: 4]
+*   **Customer Frontend:** Vue.js 3 + TypeScript + Tailwind CSS v4[cite: 4]
+*   **Admin Panel:** Laravel Livewire 4 + Tailwind CSS v4[cite: 4]
+*   **Database:** MySQL 8.4[cite: 4]
+*   **Primary Key:** UUID v7[cite: 4]
 
-## 🚀 Panduan Instalasi (Setup Awal untuk Tim)
+## ✨ Fitur Utama (Fase MVP)
+1. **Otomatisasi Pendataan Buku:** Penambahan data buku baru dengan memindai *barcode* ISBN fisik bawaan penerbit menggunakan kamera/scanner[cite: 6].
+2. **Auto-Fill Data:** Penarikan data metadata buku otomatis via Google Books API / Open Library API berdasarkan ISBN yang dipindai[cite: 6].
+3. **Pengajuan Mandiri (Self-Service):** Akses katalog publik dan pengajuan peminjaman (status *pending*) secara mandiri oleh siswa tanpa menulis di kertas[cite: 4, 6].
+4. **Verifikasi Petugas:** Panel administrasi bagi petugas untuk menyetujui (*approve*) peminjaman dan memproses pengembalian buku[cite: 4, 6].
+5. **Integrasi Sistem:** Kesiapan tabel `users` dengan kolom `rfid_uid` untuk integrasi dengan sistem presensi perangkat keras (kartu RFID) milik tim perangkat keras[cite: 5].
 
-Ikuti langkah-langkah berikut secara berurutan setelah kamu diundang ke repositori ini:
+## 🛠️ Panduan Instalasi (Untuk Anggota Tim)
 
-**1. Clone Repositori**
-Buka terminal dan *clone* *branch* `develop` (pusat pengembangan tim):
+Pastikan **PHP 8.4**, **Composer**, **Node.js**, dan **MySQL 8.4** sudah terinstal di komputer.
+
+1. Clone Repositori
 ```bash
-git clone -b develop git@github.com:HayemR/web-app-manajemen-perpustakaan.git
-cd web-app-manajemen-perpustakaan
+git clone <URL_REPO_GITHUB>
+cd <nama-folder>
 ```
 
-**2. Instalasi Dependensi Backend (Laravel)**
-Jalankan Composer untuk mengunduh semua *library* PHP yang dibutuhkan:
+2. Instalasi Depedensi
 ```bash
+# Backend
 composer install
-```
 
-**3. Instalasi Dependensi Frontend (Vue & Vite)**
-Jalankan NPM untuk mengunduh semua *library* JavaScript/Vue:
-```bash
+# Frontend
 npm install
 ```
 
-**4. Konfigurasi Environment (.env)**
-File konfigurasi rahasia tidak ikut ter- *upload* ke Git. Kamu harus membuatnya sendiri dari file contoh yang disediakan:
+3. Konfigurasi Environment
 ```bash
 cp .env.example .env
 ```
-*Buka file `.env` di *code editor* kamu, lalu ubah bagian koneksi database sesuaikan dengan komputermu (buat *database* kosong bernama `perpus_db` di phpMyAdmin/DBeaver terlebih dahulu):*
-```env
+
+4. Sesuaikan .env
+```bash
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
@@ -50,37 +53,8 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-**5. Generate App Key & Migrasi Database**
-Buat kunci keamanan Laravel dan jalankan migrasi untuk membuat tabel-tabel di *database*:
+5. Jalankan migrasi
+
 ```bash
-php artisan key:generate
 php artisan migrate
-```
-
----
-
-## 💻 Cara Menjalankan Proyek (Development)
-
-Karena kita menggunakan Laravel dan Vite secara bersamaan, kamu **wajib membuka 2 terminal** dan menjalankan kedua perintah ini secara bersamaan:
-
-**Terminal 1 (Backend - Server PHP):**
-```bash
-php artisan serve
-```
-*(Aplikasi bisa diakses di `http://127.0.0.1:8000`)*
-
-**Terminal 2 (Frontend - Kompilasi Aset Vite):**
-```bash
-npm run dev
-```
-*(Biarkan terminal ini menyala. Ia akan otomatis me-refresh browser setiap kali kamu menyimpan file `.vue` atau `.js`)*
-
----
-
-## 🌿 Aturan Git Flow (Penting!)
-- **JANGAN** pernah melakukan `git push` langsung ke *branch* `main` atau `develop`.
-- Selalu buat *branch* baru dari `develop` untuk setiap fitur yang kamu kerjakan.
-```bash
-# Contoh membuat branch untuk fitur login
-git checkout -b feature/auth-user
 ```
