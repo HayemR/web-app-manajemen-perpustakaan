@@ -25,8 +25,8 @@ Pastikan **PHP 8.4**, **Composer**, **Node.js**, dan **MySQL 8.4** sudah terinst
 
 1. Clone Repositori
 ```bash
-git clone <URL_REPO_GITHUB>
-cd <nama-folder>
+git clone https://github.com/HayemR/web-app-manajemen-perpustakaan
+cd web-app-manajemen-perpustakaan
 ```
 
 2. Instalasi Depedensi
