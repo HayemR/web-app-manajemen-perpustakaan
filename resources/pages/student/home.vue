@@ -229,7 +229,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
       class="fixed left-0 right-0 top-0 z-50 bg-white/90 shadow-[0_4px_18px_rgba(18,65,112,0.05)] backdrop-blur-md"
     >
       <div
-        class="mx-auto flex h-20 w-full max-w-[1400px] items-center justify-between gap-4 px-4 md:px-5"
+        class="mx-auto flex h-20 w-full max-w-[1200px] items-center justify-between gap-4 px-4 md:px-5"
       >
         <!-- Logo + Navigation -->
         <div class="flex min-w-0 flex-1 items-center gap-5">
@@ -259,34 +259,41 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
           <!-- Navigation -->
           <nav class="hidden items-center gap-1 lg:flex">
-            <a
-              href="#"
-              class="rounded-xl bg-[#E2F9EC] px-3 py-1.5 text-sm font-semibold text-[#124170] shadow-sm"
-            >
-              Home
-            </a>
+                <RouterLink
+                    to="/vue"
+                    class="rounded-xl px-3 py-2 text-[14px] font-semibold text-[#6F8B95] transition-colors hover:bg-[#E2F9EC] hover:text-[#124170]"
+                >
+                    Home
+                </RouterLink>
 
-            <a
-              href="#"
-              class="rounded-xl px-3 py-1.5 text-sm font-semibold text-[#6F8B95] transition-colors hover:bg-[#E2F9EC] hover:text-[#124170]"
-            >
-              My Library
-            </a>
+                <RouterLink
+                    to="/my-library"
+                    class="rounded-xl px-3 py-2 text-[14px] font-semibold text-[#6F8B95] transition-colors hover:bg-[#E2F9EC] hover:text-[#124170]"
+                >
+                    My Library
+                </RouterLink>
 
-            <button
-              @click="goToScan()"
-              class="rounded-xl px-3 py-1.5 text-sm font-semibold text-[#6F8B95] transition-colors hover:bg-[#E2F9EC] hover:text-[#124170]"
-            >
-              Scan
-            </button>
+                <RouterLink
+                    to="#"
+                    class="rounded-xl px-3 py-2 text-[14px] font-semibold text-[#6F8B95]"
+                >
+                    Bookmarks
+                </RouterLink>
 
-            <a
-              href="#"
-              class="rounded-xl px-3 py-1.5 text-sm font-semibold text-[#6F8B95] transition-colors hover:bg-[#E2F9EC] hover:text-[#124170]"
-            >
-              Account
-            </a>
-          </nav>
+                <RouterLink
+                    to="#"
+                    class="rounded-xl px-3 py-2 text-[14px] font-semibold text-[#6F8B95]"
+                >
+                    Scan
+                </RouterLink>
+
+                <RouterLink
+                    to="#"
+                    class="rounded-xl px-3 py-2 text-[14px] font-semibold text-[#6F8B95]"
+                >
+                    Account
+                </RouterLink>
+            </nav>
         </div>
 
         <!-- Right Header -->
@@ -406,7 +413,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
         </div>
 
         <div
-          class="relative z-10 mx-auto max-w-[1400px] px-4 pt-6 md:px-5"
+          class="relative z-10 mx-auto max-w-[1200px] px-4 pt-6 md:px-5"
         >
           <div
             class="mb-6 flex flex-col justify-between gap-6 lg:flex-row lg:items-end"
@@ -588,7 +595,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
       <!-- CONTENT -->
       <div
-        class="mx-auto w-full max-w-[1400px] px-4 py-6 md:px-5"
+        class="mx-auto w-full max-w-[1200px] px-4 py-6 md:px-5"
       >
         <!-- FILTER BAR -->
         <div
@@ -1272,7 +1279,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
       class="w-full bg-white shadow-[0_-4px_18px_rgba(18,65,112,0.03)]"
     >
       <div
-        class="mx-auto grid max-w-[1400px] grid-cols-1 gap-8 px-4 py-10 md:grid-cols-4 md:px-5"
+        class="mx-auto grid max-w-[1200px] grid-cols-1 gap-8 px-4 py-10 md:grid-cols-4 md:px-5"
       >
         <div class="flex flex-col gap-2">
           <div class="flex items-center gap-2">
@@ -1372,7 +1379,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
       <div class="w-full bg-[#E2F9EC] py-3">
         <div
-          class="mx-auto flex max-w-[1400px] flex-col items-center justify-between gap-2 px-4 sm:flex-row md:px-5"
+          class="mx-auto flex max-w-[1200px] flex-col items-center justify-between gap-2 px-4 sm:flex-row md:px-5"
         >
           <span class="text-[11px] text-[#6F8B95]">
             © 2026 Diginesh Library System. All rights reserved.
