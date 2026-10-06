@@ -1,7 +1,3 @@
 <template>
-  <StudentHome />
+  <router-view />
 </template>
-
-<script setup>
-  import StudentHome from '../pages/student/home.vue'
-</script>

@@ -259,34 +259,41 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
           <!-- Navigation -->
           <nav class="hidden items-center gap-1 lg:flex">
-            <a
-              href="#"
-              class="rounded-xl bg-[#E2F9EC] px-3 py-1.5 text-sm font-semibold text-[#124170] shadow-sm"
-            >
-              Home
-            </a>
+                <RouterLink
+                    to="/vue"
+                    class="rounded-xl px-3 py-2 text-[14px] font-semibold text-[#6F8B95] transition-colors hover:bg-[#E2F9EC] hover:text-[#124170]"
+                >
+                    Home
+                </RouterLink>
 
-            <a
-              href="#"
-              class="rounded-xl px-3 py-1.5 text-sm font-semibold text-[#6F8B95] transition-colors hover:bg-[#E2F9EC] hover:text-[#124170]"
-            >
-              My Library
-            </a>
+                <RouterLink
+                    to="/my-library"
+                    class="rounded-xl px-3 py-2 text-[14px] font-semibold text-[#6F8B95] transition-colors hover:bg-[#E2F9EC] hover:text-[#124170]"
+                >
+                    My Library
+                </RouterLink>
 
-            <button
-              @click="goToScan()"
-              class="rounded-xl px-3 py-1.5 text-sm font-semibold text-[#6F8B95] transition-colors hover:bg-[#E2F9EC] hover:text-[#124170]"
-            >
-              Scan
-            </button>
+                <RouterLink
+                    to="#"
+                    class="rounded-xl px-3 py-2 text-[14px] font-semibold text-[#6F8B95]"
+                >
+                    Bookmarks
+                </RouterLink>
 
-            <a
-              href="#"
-              class="rounded-xl px-3 py-1.5 text-sm font-semibold text-[#6F8B95] transition-colors hover:bg-[#E2F9EC] hover:text-[#124170]"
-            >
-              Account
-            </a>
-          </nav>
+                <RouterLink
+                    to="#"
+                    class="rounded-xl px-3 py-2 text-[14px] font-semibold text-[#6F8B95]"
+                >
+                    Scan
+                </RouterLink>
+
+                <RouterLink
+                    to="#"
+                    class="rounded-xl px-3 py-2 text-[14px] font-semibold text-[#6F8B95]"
+                >
+                    Account
+                </RouterLink>
+            </nav>
         </div>
 
         <!-- Right Header -->
