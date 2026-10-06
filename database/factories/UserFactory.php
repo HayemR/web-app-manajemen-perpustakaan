@@ -26,9 +26,13 @@ class UserFactory extends Factory
     {
         return [
             'name' => fake()->name(),
+            'nis' => (string) fake()->unique()->numerify('#####'),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
+            'role' => 'student',
+            'rfid_uid' => strtoupper(fake()->unique()->bothify('??##??##')),
+            'class_name' => fake()->randomElement(['X RPL 1', 'XI RPL 2', 'XII TKJ 1', 'X MM 1']),
             'remember_token' => Str::random(10),
         ];
     }

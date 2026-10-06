@@ -59,7 +59,12 @@ DB_PASSWORD=
 php artisan migrate:fresh
 ```
 
-6. Jalankan pada tab terminal/command prompt yang berbeda
+6. Jangan lupa untuk generate key baru
+```
+php artisan key:generate
+```
+
+7. Jalankan pada tab terminal/command prompt yang berbeda
 ```bash
 php artisan serve
 
