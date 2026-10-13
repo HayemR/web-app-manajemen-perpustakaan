@@ -1,10 +1,11 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import StudentNavbar from '../../components/student/StudentNavbar.vue'
+import StudentFooter from '../../components/student/StudentFooter.vue'
 
 const activeTab = ref('borrowed')
 const toastMessage = ref('')
 const showToastState = ref(false)
-
 let toastTimer
 
 const borrowedBooks = ref([
@@ -21,8 +22,7 @@ const borrowedBooks = ref([
     statusText: 'Jatuh tempo dalam 5 hari',
     returnStation: 'Meja Sirkulasi Perpustakaan',
     course: 'Astronomi & Fisika',
-    image:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuAOgxKinXrk18jmiPCr--Mgv5nUdiW-6WAYOVJO_68pKGyK8LiFaBbUY5ufBVGMNl9xugzqbDeODy7PsQUTZIm8ocBaPDYFvt3gGplV2sOqrvZReDW1qLdVKzH9Vw8OaC5F3KFd4SATvUBxJAij5AgWYAElLp-QU8VA31Vw2755j859pz1txOi01bg5oSNsz3iBh1N1HtWASoDOmpBgFpITVU1lobjrvrDeT1cEY-3SAgk38fprTrX2QA',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAOgxKinXrk18jmiPCr--Mgv5nUdiW-6WAYOVJO_68pKGyK8LiFaBbUY5ufBVGMNl9xugzqbDeODy7PsQUTZIm8ocBaPDYFvt3gGplV2sOqrvZReDW1qLdVKzH9Vw8OaC5F3KFd4SATvUBxJAij5AgWYAElLp-QU8VA31Vw2755j859pz1txOi01bg5oSNsz3iBh1N1HtWASoDOmpBgFpITVU1lobjrvrDeT1cEY-3SAgk38fprTrX2QA',
   },
   {
     id: 2,
@@ -52,8 +52,7 @@ const loanHistory = ref([
     duration: '14 Hari',
     status: 'Tepat Waktu',
     course: 'Bahasa Inggris',
-    image:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuAqJHywXo533vqEBIR-vDv6CTcs1ATd3vuIAkdpqvHhkF_CsTpnYClwlc2MYqISwTUq00d-PntcUVrSDPHOmfcc8hd-c8j7VVs2TddlLkVhYJSzb11ygixYyoS_xej6IlkXhcN0kz8rCHqFZfxU_7f5JnyGsov8BTwZroVUMIIJtVGU7CW9Jzsu2zfgDTN1EMONi_8MaEhu1vH3Q6uiI1a2SYt15xphqOz7kaHb4iTbJDSOKT4Fg-Hixg',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAqJHywXo533vqEBIR-vDv6CTcs1ATd3vuIAkdpqvHhkF_CsTpnYClwlc2MYqISwTUq00d-PntcUVrSDPHOmfcc8hd-c8j7VVs2TddlLkVhYJSzb11ygixYyoS_xej6IlkXhcN0kz8rCHqFZfxU_7f5JnyGsov8BTwZroVUMIIJtVGU7CW9Jzsu2zfgDTN1EMONi_8MaEhu1vH3Q6uiI1a2SYt15xphqOz7kaHb4iTbJDSOKT4Fg-Hixg',
   },
   {
     id: 2,
@@ -87,7 +86,6 @@ const fineAmount = computed(() => {
   const overdueBooks = borrowedBooks.value.filter(
     (book) => book.status === 'overdue',
   )
-
   return overdueBooks.length * 0.25
 })
 
@@ -98,9 +96,7 @@ const quotaPercentage = computed(() =>
 function showToast(message) {
   toastMessage.value = message
   showToastState.value = true
-
   clearTimeout(toastTimer)
-
   toastTimer = setTimeout(() => {
     showToastState.value = false
   }, 3200)
@@ -108,7 +104,6 @@ function showToast(message) {
 
 function switchTab(tab) {
   activeTab.value = tab
-
   if (tab === 'history') {
     showToast('Menampilkan riwayat peminjaman buku')
   }
@@ -149,6 +144,8 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="min-h-screen bg-[#DDF4E7] text-[#0c1f17]">
+    <StudentNavbar />
+
     <!-- Toast -->
     <Transition
       enter-active-class="transition duration-300 ease-out"
@@ -165,179 +162,28 @@ onBeforeUnmount(() => {
         <span class="material-symbols-outlined text-[#67C090]">
           check_circle
         </span>
-
         <span class="text-sm font-semibold">
           {{ toastMessage }}
         </span>
       </div>
     </Transition>
 
-    <!-- Header -->
-    <header
-      class="fixed left-0 right-0 top-0 z-50 bg-white/90 shadow-[0_4px_18px_rgba(18,65,112,0.05)] backdrop-blur-md"
-    >
-      <div
-        class="mx-auto flex h-20 max-w-[1200px] items-center justify-between gap-4 px-4 md:px-5"
-      >
-        <!-- Logo -->
-        <div class="flex min-w-0 items-center gap-5">
-          <div class="flex shrink-0 items-center gap-2">
-            <div
-              class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#26667F] text-white shadow-sm"
-            >
-              <span class="material-symbols-outlined">local_library</span>
-            </div>
-
-            <div class="hidden flex-col sm:flex">
-              <span
-                class="text-[16px] font-semibold tracking-tight text-[#124170]"
-              >
-                Diginesh
-              </span>
-
-              <span class="text-[11px] font-semibold text-[#6F8B95]">
-                Digital Library System
-              </span>
-            </div>
-          </div>
-
-          <!-- Navigation -->
-          <nav class="hidden items-center gap-1 lg:flex">
-                <RouterLink
-                    to="/vue"
-                    class="rounded-xl px-3 py-2 text-[14px] font-semibold text-[#6F8B95] transition-colors hover:bg-[#E2F9EC] hover:text-[#124170]"
-                >
-                    Home
-                </RouterLink>
-
-                <RouterLink
-                    to="/my-library"
-                    class="rounded-xl px-3 py-2 text-[14px] font-semibold text-[#6F8B95] transition-colors hover:bg-[#E2F9EC] hover:text-[#124170]"
-                >
-                    My Library
-                </RouterLink>
-
-                <RouterLink
-                    to="#"
-                    class="rounded-xl px-3 py-2 text-[14px] font-semibold text-[#6F8B95]"
-                >
-                    Bookmarks
-                </RouterLink>
-
-                <RouterLink
-                    to="#"
-                    class="rounded-xl px-3 py-2 text-[14px] font-semibold text-[#6F8B95]"
-                >
-                    Scan
-                </RouterLink>
-
-                <RouterLink
-                    to="#"
-                    class="rounded-xl px-3 py-2 text-[14px] font-semibold text-[#6F8B95]"
-                >
-                    Account
-                </RouterLink>
-            </nav>
-        </div>
-
-        <!-- Header Right -->
-        <div class="flex shrink-0 items-center gap-2 md:gap-3">
-          <!-- Search -->
-          <div
-            class="hidden h-10 w-56 items-center rounded-xl bg-white px-3 shadow-[0_2px_8px_rgba(18,65,112,0.04)] md:flex lg:w-64"
-          >
-            <span class="material-symbols-outlined mr-2 text-[#26667F]">
-              search
-            </span>
-
-            <input
-              type="text"
-              placeholder="Search titles, authors..."
-              class="w-full bg-transparent text-sm outline-none placeholder:text-[#6F8B95]"
-            />
-
-            <kbd
-              class="rounded bg-[#E2F9EC] px-1.5 py-0.5 text-[11px] font-semibold text-[#6F8B95]"
-            >
-              ⌘K
-            </kbd>
-          </div>
-
-          <!-- Notification -->
-          <button
-            class="relative flex h-10 w-10 items-center justify-center rounded-xl bg-white text-[#26667F] shadow-[0_2px_8px_rgba(18,65,112,0.04)] transition-colors hover:bg-[#E2F9EC]"
-            @click="showToast('Tidak ada notifikasi baru')"
-          >
-            <span class="material-symbols-outlined">
-              notifications
-            </span>
-
-            <span
-              class="absolute right-2 top-2 h-2 w-2 rounded-full bg-[#67C090]"
-            />
-          </button>
-
-          <!-- Profile -->
-          <div
-            class="flex items-center gap-2 rounded-xl bg-[#F4FBF7] px-2.5 py-1.5"
-          >
-            <div
-              class="flex h-8 w-8 items-center justify-center rounded-full bg-[#26667F] text-xs font-bold text-white"
-            >
-              AD
-            </div>
-
-            <div class="hidden min-w-0 flex-col sm:flex">
-              <span
-                class="whitespace-nowrap text-[13px] font-semibold text-[#124170]"
-              >
-                Adel
-              </span>
-
-              <span
-                class="mt-0.5 flex items-center gap-1 whitespace-nowrap text-[11px] font-semibold text-[#006C45]"
-              >
-                <span class="h-1.5 w-1.5 rounded-full bg-[#67C090]" />
-                Student • Active
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
-
     <!-- Main -->
-    <main class="min-h-screen w-full bg-[#DDF4E7] pt-20">
-      <div
-        class="mx-auto flex w-full max-w-[1200px] flex-col gap-6 px-4 py-6 md:px-5"
-      >
+    <main class="pt-20">
+      <div class="mx-auto flex w-full max-w-[1200px] flex-col gap-6 px-4 py-6 md:px-5">
         <!-- Page Heading -->
-        <section
-          class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
-        >
+        <section class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div class="flex flex-col gap-1">
-            <span
-              class="text-[11px] font-semibold uppercase tracking-wider text-[#006C45]"
-            >
-              Student Dashboard
-            </span>
-
-            <h1
-              class="text-[28px] font-bold tracking-tight text-[#124170] md:text-[32px]"
-            >
-              My Library & Borrowed Items
+            <h1 class="text-[28px] font-bold tracking-tight text-[#124170] md:text-[32px]">
+              Buku yang Dipinjam
             </h1>
-
             <p class="max-w-2xl text-sm leading-5 text-[#6F8B95]">
-              Kelola buku yang sedang kamu pinjam dan lihat riwayat
-              peminjamanmu.
+              Kelola buku yang sedang kamu pinjam dan lihat riwayat peminjamanmu.
             </p>
           </div>
 
           <!-- Tabs -->
-          <div
-            class="inline-flex self-start rounded-xl bg-white p-1 shadow-sm md:self-auto"
-          >
+          <div class="inline-flex self-start rounded-xl bg-white p-1 shadow-sm md:self-auto">
             <button
               class="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold transition-all"
               :class="
@@ -347,8 +193,7 @@ onBeforeUnmount(() => {
               "
               @click="switchTab('borrowed')"
             >
-              <span>Currently Borrowed</span>
-
+              <span>Sedang Dipinjam</span>
               <span
                 class="rounded-full px-1.5 py-0.5 text-[11px]"
                 :class="
@@ -370,8 +215,7 @@ onBeforeUnmount(() => {
               "
               @click="switchTab('history')"
             >
-              <span>Loan History</span>
-
+              <span>Riwayat Peminjaman</span>
               <span
                 class="rounded-full px-1.5 py-0.5 text-[11px]"
                 :class="
@@ -392,14 +236,10 @@ onBeforeUnmount(() => {
           <section
             class="relative flex flex-col gap-4 overflow-hidden rounded-2xl bg-white p-5 shadow-sm lg:flex-row lg:items-center lg:justify-between"
           >
-            <div
-              class="absolute bottom-0 left-0 top-0 w-1.5 bg-[#E55353]"
-            />
+            <div class="absolute bottom-0 left-0 top-0 w-1.5 bg-[#E55353]" />
 
             <div class="flex items-start gap-3 pl-1 sm:items-center">
-              <div
-                class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#FDE8E8] text-[#E55353]"
-              >
+              <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#FDE8E8] text-[#E55353]">
                 <span class="material-symbols-outlined">
                   warning
                 </span>
@@ -407,50 +247,31 @@ onBeforeUnmount(() => {
 
               <div>
                 <div class="flex flex-wrap items-center gap-2">
-                  <span
-                    class="text-sm font-semibold text-[#124170] md:text-base"
-                  >
+                  <span class="text-sm font-semibold text-[#124170] md:text-base">
                     1 buku jatuh tempo dalam 5 hari • 1 buku terlambat 2 hari
                   </span>
-
-                  <span
-                    class="rounded-full bg-[#E55353] px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-white"
-                  >
-                    Action Needed
+                  <span class="rounded-full bg-[#E55353] px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-white">
+                    Perlu Tindakan
                   </span>
                 </div>
 
                 <p class="mt-0.5 text-xs leading-5 text-[#6F8B95]">
-                  Segera kembalikan buku yang terlambat ke meja sirkulasi
-                  perpustakaan.
+                  Segera kembalikan buku yang terlambat ke meja sirkulasi perpustakaan.
                 </p>
               </div>
             </div>
-
-            <button
-              class="shrink-0 self-start rounded-xl bg-[#E2F9EC] px-4 py-2 text-sm font-semibold text-[#124170] transition-colors hover:bg-[#D1E8DB] lg:self-auto"
-              @click="returnInstructions()"
-            >
-              Lihat Informasi Pengembalian
-            </button>
           </section>
 
           <!-- Metrics -->
-          <section class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <section class="flex w-full gap-4">
             <!-- Quota -->
-            <div
-              class="flex flex-col justify-between rounded-2xl bg-white p-5 shadow-sm"
-            >
+            <div class="flex min-w-0 flex-1 flex-col justify-between rounded-2xl bg-white p-5 shadow-sm">
               <div class="mb-2 flex items-center justify-between">
-                <span
-                  class="text-[11px] font-semibold uppercase tracking-wider text-[#6F8B95]"
-                >
-                  Borrowing Quota
+                <span class="text-[11px] font-semibold uppercase tracking-wider text-[#6F8B95]">
+                  Kuota Peminjaman
                 </span>
 
-                <div
-                  class="flex h-8 w-8 items-center justify-center rounded-lg bg-[#E2F9EC] text-[#26667F]"
-                >
+                <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-[#E2F9EC] text-[#26667F]">
                   <span class="material-symbols-outlined text-lg">
                     menu_book
                   </span>
@@ -460,17 +281,14 @@ onBeforeUnmount(() => {
               <div>
                 <div class="flex items-baseline justify-between">
                   <span class="text-xl font-semibold text-[#124170]">
-                    {{ activeBookCount }} of 3 Books
+                    {{ activeBookCount }} dari 3 Buku
                   </span>
-
                   <span class="text-[11px] font-semibold text-[#26667F]">
-                    {{ quotaPercentage }}% Active
+                    {{ quotaPercentage }}% Aktif
                   </span>
                 </div>
 
-                <div
-                  class="mt-2 h-2 w-full overflow-hidden rounded-full bg-[#E2F9EC]"
-                >
+                <div class="mt-2 h-2 w-full overflow-hidden rounded-full bg-[#E2F9EC]">
                   <div
                     class="h-full rounded-full bg-[#26667F] transition-all"
                     :style="{ width: `${quotaPercentage}%` }"
@@ -484,19 +302,13 @@ onBeforeUnmount(() => {
             </div>
 
             <!-- Balance -->
-            <div
-              class="flex flex-col justify-between rounded-2xl bg-white p-5 shadow-sm"
-            >
+            <div class="flex min-w-0 flex-1 flex-col justify-between rounded-2xl bg-white p-5 shadow-sm">
               <div class="mb-2 flex items-center justify-between">
-                <span
-                  class="text-[11px] font-semibold uppercase tracking-wider text-[#6F8B95]"
-                >
-                  Account Balance
+                <span class="text-[11px] font-semibold uppercase tracking-wider text-[#6F8B95]">
+                  Denda
                 </span>
 
-                <div
-                  class="flex h-8 w-8 items-center justify-center rounded-lg bg-[#FDE8E8] text-[#E55353]"
-                >
+                <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-[#FDE8E8] text-[#E55353]">
                   <span class="material-symbols-outlined text-lg">
                     payments
                   </span>
@@ -506,14 +318,10 @@ onBeforeUnmount(() => {
               <div>
                 <span
                   class="text-xl font-semibold"
-                  :class="
-                    fineAmount > 0
-                      ? 'text-[#E55353]'
-                      : 'text-[#006C45]'
-                  "
+                  :class="fineAmount > 0 ? 'text-[#E55353]' : 'text-[#006C45]'"
                 >
                   Rp{{ (fineAmount * 16000).toLocaleString('id-ID') }}
-                  Pending Fine
+                  Denda Tertunda
                 </span>
 
                 <span class="mt-1 block text-xs text-[#6F8B95]">
@@ -525,39 +333,66 @@ onBeforeUnmount(() => {
                 Hubungi petugas perpustakaan untuk informasi pembayaran.
               </span>
             </div>
+
+            <!-- Reading Journey -->
+            <div class="flex min-w-0 flex-1 flex-col justify-between rounded-2xl bg-white p-5 shadow-sm">
+              <div class="mb-2 flex items-center justify-between">
+                <span class="text-[11px] font-semibold uppercase tracking-wider text-[#6F8B95]">
+                  Perjalanan Membaca
+                </span>
+
+                <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-[#E2F9EC] text-[#26667F]">
+                  <span class="material-symbols-outlined text-lg">
+                    auto_stories
+                  </span>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex items-baseline justify-between">
+                  <span class="text-xl font-semibold text-[#124170]">
+                    {{ loanHistory.length }} Buku Dibaca
+                  </span>
+                  <span class="text-[11px] font-semibold text-[#26667F]">
+                    Tahun Ini
+                  </span>
+                </div>
+
+                <div class="mt-2 h-2 w-full overflow-hidden rounded-full bg-[#E2F9EC]">
+                  <div
+                    class="h-full rounded-full bg-[#67C090]"
+                    :style="{ width: `${Math.min(loanHistory.length * 20, 100)}%` }"
+                  />
+                </div>
+              </div>
+
+              <span class="mt-2 text-xs text-[#6F8B95]">
+                Terus jelajahi koleksi dan temukan buku favoritmu berikutnya.
+              </span>
+            </div>
           </section>
 
           <!-- Main Two Column -->
-          <section
-            class="grid grid-cols-1 items-start gap-6 lg:grid-cols-12"
-          >
+          <section class="grid grid-cols-1 items-start gap-6 lg:grid-cols-12">
             <!-- Loans -->
             <div class="flex flex-col gap-5 lg:col-span-8">
-              <div
-                class="flex flex-col justify-between gap-3 sm:flex-row sm:items-center"
-              >
+              <div class="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
                 <div class="flex items-center gap-2">
                   <span class="material-symbols-outlined text-[#26667F]">
                     bookmark
                   </span>
 
-                  <h2
-                    class="text-xl font-semibold text-[#124170]"
-                  >
-                    Active Physical Book Loans
+                  <h2 class="text-xl font-semibold text-[#124170]">
+                    Buku Fisik yang Sedang Dipinjam
                   </h2>
 
-                  <span
-                    class="rounded-full bg-white px-2 py-0.5 text-[11px] font-semibold text-[#26667F] shadow-sm"
-                  >
-                    {{ activeBookCount }} items
+                  <span class="rounded-full bg-white px-2 py-0.5 text-[11px] font-semibold text-[#26667F] shadow-sm">
+                    {{ activeBookCount }} buku
                   </span>
                 </div>
 
-                <div
-                  class="rounded-xl bg-white px-3 py-2 text-xs font-semibold text-[#6F8B95] shadow-sm"
-                >
-                  Sort by: Due Date
+                <div class="rounded-xl bg-white px-3 py-2 text-xs font-semibold text-[#6F8B95] shadow-sm">
+                  Urutkan berdasarkan: Jatuh Tempo
                 </div>
               </div>
 
@@ -566,16 +401,10 @@ onBeforeUnmount(() => {
                 v-for="book in borrowedBooks"
                 :key="book.id"
                 class="relative flex flex-col gap-5 overflow-hidden rounded-2xl bg-white p-5 shadow-sm transition-shadow hover:shadow-md sm:flex-row"
-                :class="
-                  book.status === 'overdue'
-                    ? 'border-l-4 border-[#E55353]'
-                    : ''
-                "
+                :class="book.status === 'overdue' ? 'border-l-4 border-[#E55353]' : ''"
               >
                 <!-- Cover -->
-                <div
-                  class="relative h-52 w-full shrink-0 overflow-hidden rounded-xl bg-[#E2F9EC] shadow-sm sm:w-36"
-                >
+                <div class="relative h-52 w-full shrink-0 overflow-hidden rounded-xl bg-[#E2F9EC] shadow-sm sm:w-36">
                   <img
                     v-if="book.image"
                     :src="book.image"
@@ -587,9 +416,7 @@ onBeforeUnmount(() => {
                     v-else
                     class="flex h-full w-full flex-col justify-end bg-gradient-to-tr from-[#124170] to-[#26667F] p-3 text-white"
                   >
-                    <span
-                      class="material-symbols-outlined mb-auto text-4xl opacity-40"
-                    >
+                    <span class="material-symbols-outlined mb-auto text-4xl opacity-40">
                       public
                     </span>
 
@@ -606,9 +433,7 @@ onBeforeUnmount(() => {
                     </span>
                   </div>
 
-                  <div
-                    class="absolute left-2 top-2 rounded bg-white/90 px-1.5 py-0.5 font-mono text-[11px] font-semibold text-[#124170] shadow-sm backdrop-blur-sm"
-                  >
+                  <div class="absolute left-2 top-2 rounded bg-white/90 px-1.5 py-0.5 font-mono text-[11px] font-semibold text-[#124170] shadow-sm backdrop-blur-sm">
                     {{ book.code }}
                   </div>
                 </div>
@@ -616,9 +441,7 @@ onBeforeUnmount(() => {
                 <!-- Information -->
                 <div class="flex min-w-0 flex-1 flex-col justify-between">
                   <div>
-                    <div
-                      class="mb-1 flex flex-wrap items-center justify-between gap-2"
-                    >
+                    <div class="mb-1 flex flex-wrap items-center justify-between gap-2">
                       <span
                         class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold"
                         :class="
@@ -629,15 +452,10 @@ onBeforeUnmount(() => {
                       >
                         <span
                           class="h-1.5 w-1.5 rounded-full"
-                          :class="
-                            book.status === 'overdue'
-                              ? 'bg-[#E55353]'
-                              : 'bg-[#67C090]'
-                          "
+                          :class="book.status === 'overdue' ? 'bg-[#E55353]' : 'bg-[#67C090]'"
                         />
 
-                        {{ book.statusText }} • Jatuh tempo
-                        {{ book.dueDate }}
+                        {{ book.statusText }} • Jatuh tempo {{ book.dueDate }}
                       </span>
 
                       <span
@@ -647,7 +465,6 @@ onBeforeUnmount(() => {
                         <span class="material-symbols-outlined text-sm">
                           attach_money
                         </span>
-
                         Denda Rp4.000
                       </span>
 
@@ -655,34 +472,27 @@ onBeforeUnmount(() => {
                         v-else
                         class="font-mono text-[11px] text-[#6F8B95]"
                       >
-                        Loan ID: #{{ book.loanId }}
+                        ID Peminjaman: #{{ book.loanId }}
                       </span>
                     </div>
 
-                    <h3
-                      class="truncate text-base font-semibold text-[#124170] transition-colors hover:text-[#26667F]"
-                    >
+                    <h3 class="truncate text-base font-semibold text-[#124170] transition-colors hover:text-[#26667F]">
                       {{ book.title }}
                     </h3>
 
                     <span class="mt-0.5 block text-xs text-[#6F8B95]">
-                      By {{ book.author }} • {{ book.category }}
+                      Oleh {{ book.author }} • {{ book.category }}
                     </span>
 
                     <!-- Metadata -->
                     <div
                       class="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 rounded-xl p-3 text-[#6F8B95]"
-                      :class="
-                        book.status === 'overdue'
-                          ? 'bg-[#FDE8E8]/40'
-                          : 'bg-[#E2F9EC]'
-                      "
+                      :class="book.status === 'overdue' ? 'bg-[#FDE8E8]/40' : 'bg-[#E2F9EC]'"
                     >
                       <div class="flex flex-col">
                         <span class="text-[11px] font-semibold">
-                          Borrowed On
+                          Dipinjam Pada
                         </span>
-
                         <span class="text-xs text-[#0c1f17]">
                           {{ book.borrowedOn }}
                         </span>
@@ -690,9 +500,8 @@ onBeforeUnmount(() => {
 
                       <div class="flex flex-col">
                         <span class="text-[11px] font-semibold">
-                          Return Station
+                          Tempat Pengembalian
                         </span>
-
                         <span class="text-xs text-[#0c1f17]">
                           {{ book.returnStation }}
                         </span>
@@ -702,14 +511,9 @@ onBeforeUnmount(() => {
                         <span class="text-[11px] font-semibold">
                           Status
                         </span>
-
                         <span
                           class="text-xs font-semibold"
-                          :class="
-                            book.status === 'overdue'
-                              ? 'text-[#E55353]'
-                              : 'text-[#006C45]'
-                          "
+                          :class="book.status === 'overdue' ? 'text-[#E55353]' : 'text-[#006C45]'"
                         >
                           {{
                             book.status === 'overdue'
@@ -721,9 +525,8 @@ onBeforeUnmount(() => {
 
                       <div class="flex flex-col">
                         <span class="text-[11px] font-semibold">
-                          Course Tie-in
+                          Terkait Mata Pelajaran
                         </span>
-
                         <span class="text-xs text-[#0c1f17]">
                           {{ book.course }}
                         </span>
@@ -732,18 +535,10 @@ onBeforeUnmount(() => {
 
                     <div
                       class="mt-2 flex items-start gap-1.5"
-                      :class="
-                        book.status === 'overdue'
-                          ? 'text-[#E55353]'
-                          : 'text-[#6F8B95]'
-                      "
+                      :class="book.status === 'overdue' ? 'text-[#E55353]' : 'text-[#6F8B95]'"
                     >
                       <span class="material-symbols-outlined mt-0.5 text-base">
-                        {{
-                          book.status === 'overdue'
-                            ? 'error'
-                            : 'info'
-                        }}
+                        {{ book.status === 'overdue' ? 'error' : 'info' }}
                       </span>
 
                       <span class="text-xs leading-5">
@@ -757,31 +552,10 @@ onBeforeUnmount(() => {
                   </div>
 
                   <!-- Actions -->
-                  <div
-                    class="mt-4 flex flex-wrap items-center gap-2 border-t border-[#E2F9EC] pt-3"
-                  >
-                    <button
-                      class="rounded-xl bg-[#E2F9EC] px-3 py-2 text-sm font-semibold text-[#124170] transition-colors hover:bg-[#D1E8DB]"
-                      @click="viewBookDetails(book)"
-                    >
-                      Book Details
-                    </button>
-
-                    <button
-                      v-if="book.status === 'overdue'"
-                      class="rounded-xl bg-[#E55353] px-3 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#BA1A1A]"
-                      @click="returnInstructions(book)"
-                    >
-                      Return Instructions
-                    </button>
-
-                    <button
-                      v-if="book.status === 'overdue'"
-                      class="ml-auto text-xs font-semibold text-[#6F8B95] underline transition-colors hover:text-[#124170]"
-                      @click="reportIssue(book)"
-                    >
-                      Report Issue / Lost Book
-                    </button>
+                  <div class="mt-4 flex flex-wrap items-center gap-2 border-t border-[#E2F9EC] pt-3">
+                    <RouterLink :to="`/book/${book.id}`" class="rounded-xl bg-[#E2F9EC] px-3 py-2 text-sm font-semibold text-[#124170] transition-colors hover:bg-[#D1E8DB]">
+                        Detail Buku
+                    </RouterLink>
                   </div>
                 </div>
               </article>
@@ -790,69 +564,54 @@ onBeforeUnmount(() => {
             <!-- Sidebar -->
             <aside class="flex flex-col gap-5 lg:col-span-4">
               <!-- Student Card -->
-              <div
-                class="flex flex-col gap-4 rounded-2xl bg-white p-5 shadow-sm"
-              >
+              <div class="flex flex-col gap-4 rounded-2xl bg-white p-5 shadow-sm">
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-2">
                     <span class="material-symbols-outlined text-[#26667F]">
                       badge
                     </span>
 
-                    <span
-                      class="text-[11px] font-semibold uppercase tracking-wider text-[#6F8B95]"
-                    >
-                      Student Card
+                    <span class="text-[11px] font-semibold uppercase tracking-wider text-[#6F8B95]">
+                      Kartu Siswa
                     </span>
                   </div>
 
-                  <span
-                    class="inline-flex items-center gap-1 rounded-full bg-[#E8F8F0] px-2 py-0.5 text-[11px] font-semibold text-[#006C45]"
-                  >
+                  <span class="inline-flex items-center gap-1 rounded-full bg-[#E8F8F0] px-2 py-0.5 text-[11px] font-semibold text-[#006C45]">
                     <span class="h-1.5 w-1.5 rounded-full bg-[#67C090]" />
-                    Active
+                    Aktif
                   </span>
                 </div>
 
                 <div class="flex items-center gap-3">
-                  <div
-                    class="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[#26667F] text-lg font-bold text-white shadow-sm"
-                  >
+                  <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[#26667F] text-lg font-bold text-white shadow-sm">
                     AD
                   </div>
 
                   <div class="flex min-w-0 flex-col">
-                    <span
-                      class="text-xl font-semibold leading-tight text-[#124170]"
-                    >
+                    <span class="text-xl font-semibold leading-tight text-[#124170]">
                       Adel
                     </span>
 
                     <span class="text-xs text-[#6F8B95]">
-                      Student
+                      Siswa
                     </span>
 
-                    <span
-                      class="mt-0.5 font-mono text-xs text-[#26667F]"
-                    >
+                    <span class="mt-0.5 font-mono text-xs text-[#26667F]">
                       LIB-8849
                     </span>
                   </div>
                 </div>
 
-                <div
-                  class="rounded-xl bg-[#E2F9EC] p-3 text-xs leading-5 text-[#6F8B95]"
-                >
+                <div class="rounded-xl bg-[#E2F9EC] p-3 text-xs leading-5 text-[#6F8B95]">
                   <div class="flex items-start gap-2">
                     <span class="material-symbols-outlined text-base text-[#006C45]">
                       info
                     </span>
 
                     <span>
-                      Kartu siswa digunakan untuk proses peminjaman di
-                      perpustakaan. Peminjaman hanya dapat dilakukan setelah
-                      siswa berada di area perpustakaan dan melakukan scan
-                      kartu.
+                      Kartu siswa digunakan untuk proses peminjaman di perpustakaan.
+                      Peminjaman hanya dapat dilakukan setelah siswa berada di area
+                      perpustakaan dan melakukan scan kartu.
                     </span>
                   </div>
                 </div>
@@ -869,15 +628,13 @@ onBeforeUnmount(() => {
                   </span>
 
                   <h3 class="text-base font-semibold text-[#124170]">
-                    Borrowing Policies
+                    Kebijakan Peminjaman
                   </h3>
                 </div>
 
                 <ul class="flex flex-col gap-3">
                   <li class="flex items-start gap-2">
-                    <div
-                      class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#E2F9EC] text-[#26667F]"
-                    >
+                    <div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#E2F9EC] text-[#26667F]">
                       <span class="material-symbols-outlined text-sm">
                         calendar_today
                       </span>
@@ -885,9 +642,8 @@ onBeforeUnmount(() => {
 
                     <div>
                       <span class="block text-sm font-semibold text-[#124170]">
-                        14-Day Lending Period
+                        Masa Peminjaman 14 Hari
                       </span>
-
                       <span class="text-xs leading-5 text-[#6F8B95]">
                         Buku dapat dipinjam selama maksimal 14 hari.
                       </span>
@@ -895,9 +651,7 @@ onBeforeUnmount(() => {
                   </li>
 
                   <li class="flex items-start gap-2">
-                    <div
-                      class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#E2F9EC] text-[#26667F]"
-                    >
+                    <div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#E2F9EC] text-[#26667F]">
                       <span class="material-symbols-outlined text-sm">
                         format_list_numbered
                       </span>
@@ -905,9 +659,8 @@ onBeforeUnmount(() => {
 
                     <div>
                       <span class="block text-sm font-semibold text-[#124170]">
-                        3 Physical Books Max
+                        Maksimal 3 Buku Fisik
                       </span>
-
                       <span class="text-xs leading-5 text-[#6F8B95]">
                         Maksimal 3 buku dapat dipinjam secara bersamaan.
                       </span>
@@ -915,9 +668,7 @@ onBeforeUnmount(() => {
                   </li>
 
                   <li class="flex items-start gap-2">
-                    <div
-                      class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#E2F9EC] text-[#26667F]"
-                    >
+                    <div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#E2F9EC] text-[#26667F]">
                       <span class="material-symbols-outlined text-sm">
                         location_on
                       </span>
@@ -927,18 +678,14 @@ onBeforeUnmount(() => {
                       <span class="block text-sm font-semibold text-[#124170]">
                         Peminjaman di Perpustakaan
                       </span>
-
                       <span class="text-xs leading-5 text-[#6F8B95]">
-                        Peminjaman harus dilakukan langsung di perpustakaan
-                        menggunakan scan kartu siswa.
+                        Peminjaman harus dilakukan langsung di perpustakaan menggunakan scan kartu siswa.
                       </span>
                     </div>
                   </li>
 
                   <li class="flex items-start gap-2">
-                    <div
-                      class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#FDE8E8] text-[#E55353]"
-                    >
+                    <div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#FDE8E8] text-[#E55353]">
                       <span class="material-symbols-outlined text-sm">
                         monetization_on
                       </span>
@@ -946,64 +693,30 @@ onBeforeUnmount(() => {
 
                     <div>
                       <span class="block text-sm font-semibold text-[#E55353]">
-                        Overdue Fees
+                        Denda Keterlambatan
                       </span>
-
                       <span class="text-xs leading-5 text-[#6F8B95]">
-                        Keterlambatan dapat dikenakan denda sesuai kebijakan
-                        perpustakaan.
+                        Keterlambatan dapat dikenakan denda sesuai kebijakan perpustakaan.
                       </span>
                     </div>
                   </li>
                 </ul>
-
-                <div
-                  class="flex items-center justify-between rounded-xl bg-[#E2F9EC] p-3"
-                >
-                  <span class="text-xs font-semibold text-[#124170]">
-                    Panduan Peminjaman
-                  </span>
-
-                  <button
-                    class="text-[#26667F] transition-colors hover:text-[#124170]"
-                    @click="showToast('Panduan peminjaman akan tersedia')"
-                  >
-                    <span class="material-symbols-outlined text-lg">
-                      open_in_new
-                    </span>
-                  </button>
-                </div>
               </div>
             </aside>
           </section>
 
           <!-- Recently Returned -->
-          <section
-            class="flex flex-col gap-5 rounded-2xl bg-white p-5 shadow-sm md:p-6"
-          >
-            <div
-              class="flex flex-col justify-between gap-2 sm:flex-row sm:items-center"
-            >
+          <section class="flex flex-col gap-5 rounded-2xl bg-white p-5 shadow-sm md:p-6">
+            <div class="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
               <div>
                 <h3 class="text-xl font-semibold text-[#124170]">
-                  Recently Returned Books
+                  Buku yang Baru Dikembalikan
                 </h3>
 
                 <p class="text-xs text-[#6F8B95]">
                   3 buku terakhir yang sudah kamu kembalikan.
                 </p>
               </div>
-
-              <button
-                class="inline-flex items-center gap-1 text-sm font-semibold text-[#26667F] transition-colors hover:text-[#124170]"
-                @click="switchTab('history')"
-              >
-                View Full Loan History
-
-                <span class="material-symbols-outlined text-base">
-                  arrow_forward
-                </span>
-              </button>
             </div>
 
             <div class="flex flex-col gap-2">
@@ -1013,9 +726,7 @@ onBeforeUnmount(() => {
                 class="flex flex-col justify-between gap-3 rounded-xl bg-[#E2F9EC] p-3 transition-colors hover:bg-[#D1E8DB] sm:flex-row sm:items-center"
               >
                 <div class="flex items-center gap-3">
-                  <div
-                    class="flex h-16 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white shadow-sm"
-                  >
+                  <div class="flex h-16 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white shadow-sm">
                     <img
                       v-if="book.image"
                       :src="book.image"
@@ -1047,28 +758,23 @@ onBeforeUnmount(() => {
                       {{ book.author }} • {{ book.category }}
                     </span>
 
-                    <span
-                      class="mt-0.5 flex items-center gap-1 text-[11px] font-semibold text-[#006C45]"
-                    >
+                    <span class="mt-0.5 flex items-center gap-1 text-[11px] font-semibold text-[#006C45]">
                       <span class="material-symbols-outlined text-sm">
                         check_circle
                       </span>
-
-                      Returned {{ book.returnedDate }} • {{ book.status }}
+                      Dikembalikan {{ book.returnedDate }} • {{ book.status }}
                     </span>
                   </div>
                 </div>
 
                 <div class="flex items-center gap-2 self-end sm:self-auto">
-                  <span
-                    class="rounded-lg bg-white px-2.5 py-1 font-mono text-[11px] font-semibold text-[#124170] shadow-sm"
-                  >
+                  <span class="rounded-lg bg-white px-2.5 py-1 font-mono text-[11px] font-semibold text-[#124170] shadow-sm">
                     {{ book.duration }}
                   </span>
 
                   <button
                     class="rounded-lg p-1.5 text-[#6F8B95] transition-colors hover:bg-white hover:text-[#124170]"
-                    title="Borrow again"
+                    title="Pinjam lagi"
                     @click="borrowAgain(book)"
                   >
                     <span class="material-symbols-outlined text-lg">
@@ -1083,20 +789,14 @@ onBeforeUnmount(() => {
 
         <!-- History Tab -->
         <template v-else>
-          <section
-            class="flex flex-col gap-5 rounded-2xl bg-white p-5 shadow-sm md:p-6"
-          >
+          <section class="flex flex-col gap-5 rounded-2xl bg-white p-5 shadow-sm md:p-6">
             <div>
-              <span
-                class="text-[11px] font-semibold uppercase tracking-wider text-[#006C45]"
-              >
-                Loan History
+              <span class="text-[11px] font-semibold uppercase tracking-wider text-[#006C45]">
+                Riwayat Peminjaman
               </span>
 
-              <h2
-                class="mt-1 text-2xl font-semibold tracking-tight text-[#124170]"
-              >
-                Your Reading History
+              <h2 class="mt-1 text-2xl font-semibold tracking-tight text-[#124170]">
+                Riwayat Bacaanmu
               </h2>
 
               <p class="mt-1 text-sm text-[#6F8B95]">
@@ -1111,9 +811,7 @@ onBeforeUnmount(() => {
                 class="flex flex-col justify-between gap-3 rounded-xl bg-[#E2F9EC] p-4 transition-colors hover:bg-[#D1E8DB] sm:flex-row sm:items-center"
               >
                 <div class="flex items-center gap-3">
-                  <div
-                    class="flex h-20 w-14 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white shadow-sm"
-                  >
+                  <div class="flex h-20 w-14 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white shadow-sm">
                     <img
                       v-if="book.image"
                       :src="book.image"
@@ -1146,15 +844,13 @@ onBeforeUnmount(() => {
                     </p>
 
                     <p class="mt-1 text-xs font-semibold text-[#006C45]">
-                      Returned {{ book.returnedDate }} • {{ book.status }}
+                      Dikembalikan {{ book.returnedDate }} • {{ book.status }}
                     </p>
                   </div>
                 </div>
 
                 <div class="flex items-center gap-3 self-end sm:self-auto">
-                  <span
-                    class="rounded-lg bg-white px-3 py-1.5 font-mono text-xs font-semibold text-[#124170] shadow-sm"
-                  >
+                  <span class="rounded-lg bg-white px-3 py-1.5 font-mono text-xs font-semibold text-[#124170] shadow-sm">
                     {{ book.duration }}
                   </span>
 
@@ -1162,7 +858,7 @@ onBeforeUnmount(() => {
                     class="rounded-xl bg-white px-3 py-2 text-xs font-semibold text-[#26667F] shadow-sm transition-colors hover:bg-[#F4FBF7]"
                     @click="borrowAgain(book)"
                   >
-                    Borrow Again
+                    Pinjam Lagi
                   </button>
                 </div>
               </div>
@@ -1171,145 +867,7 @@ onBeforeUnmount(() => {
         </template>
       </div>
     </main>
-
-    <!-- Footer -->
-    <footer class="w-full bg-white shadow-[0_-4px_18px_rgba(18,65,112,0.03)]">
-      <div
-        class="mx-auto grid max-w-[1200px] grid-cols-1 gap-6 px-4 py-8 md:grid-cols-4 md:px-5"
-      >
-        <!-- Brand -->
-        <div class="flex flex-col gap-2">
-          <div class="flex items-center gap-2">
-            <div
-              class="flex h-8 w-8 items-center justify-center rounded-lg bg-[#26667F] text-white"
-            >
-              <span class="material-symbols-outlined text-lg">
-                local_library
-              </span>
-            </div>
-
-            <span class="text-base font-semibold tracking-tight text-[#124170]">
-              Diginesh
-            </span>
-          </div>
-
-          <p class="text-xs leading-5 text-[#6F8B95]">
-            Platform perpustakaan digital untuk membantu siswa menemukan,
-            meminjam, dan mengelola buku dengan lebih mudah.
-          </p>
-        </div>
-
-        <!-- Quick Navigation -->
-        <div class="flex flex-col gap-2">
-          <span class="text-sm font-semibold text-[#124170]">
-            Quick Navigation
-          </span>
-
-          <a
-            href="/vue"
-            class="text-xs text-[#6F8B95] transition-colors hover:text-[#124170]"
-          >
-            Home
-          </a>
-
-          <a
-            href="#"
-            class="text-xs text-[#6F8B95] transition-colors hover:text-[#124170]"
-          >
-            My Library
-          </a>
-
-          <a
-            href="#"
-            class="text-xs text-[#6F8B95] transition-colors hover:text-[#124170]"
-          >
-            Bookmarks
-          </a>
-
-          <a
-            href="#"
-            class="text-xs text-[#6F8B95] transition-colors hover:text-[#124170]"
-          >
-            Scan
-          </a>
-        </div>
-
-        <!-- Opening Hours -->
-        <div class="flex flex-col gap-2">
-          <span class="text-sm font-semibold text-[#124170]">
-            Opening Hours
-          </span>
-
-          <div class="flex flex-col gap-0.5">
-            <span class="text-xs text-[#0c1f17]">
-              Senin – Kamis: 07.30 – 15.30
-            </span>
-
-            <span class="text-xs text-[#0c1f17]">
-              Jumat: 07.30 – 14.30
-            </span>
-
-            <span class="text-xs text-[#6F8B95]">
-              Sabtu & Minggu: Tutup
-            </span>
-          </div>
-        </div>
-
-        <!-- Help -->
-        <div class="flex flex-col gap-2">
-          <span class="text-sm font-semibold text-[#124170]">
-            Student Help Desk
-          </span>
-
-          <div class="flex flex-col gap-0.5">
-            <span class="text-xs text-[#0c1f17]">
-              Lokasi: Perpustakaan Sekolah
-            </span>
-
-            <span class="text-xs text-[#0c1f17]">
-              Hubungi petugas perpustakaan
-            </span>
-
-            <span class="text-xs text-[#6F8B95]">
-              Bantuan peminjaman & pengembalian
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div class="w-full bg-[#E2F9EC] py-3">
-        <div
-          class="mx-auto flex max-w-[1200px] flex-col items-center justify-between gap-2 px-4 sm:flex-row md:px-5"
-        >
-          <span class="text-[11px] text-[#6F8B95]">
-            © 2026 Diginesh School Library. All rights reserved.
-          </span>
-
-          <div class="flex gap-4">
-            <a
-              href="#"
-              class="text-[11px] text-[#6F8B95] hover:text-[#124170]"
-            >
-              Privacy Policy
-            </a>
-
-            <a
-              href="#"
-              class="text-[11px] text-[#6F8B95] hover:text-[#124170]"
-            >
-              Student Code of Conduct
-            </a>
-
-            <a
-              href="#"
-              class="text-[11px] text-[#6F8B95] hover:text-[#124170]"
-            >
-              Accessibility
-            </a>
-          </div>
-        </div>
-      </div>
-    </footer>
+    <StudentFooter />
   </div>
 </template>
 

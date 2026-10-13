@@ -8,3 +8,6 @@ Route::get('/', function () {
 Route::get('/vue', function () {
     return view('vue');
 });
+Route::get('/book/{id}', function ($id) {
+    return view('vue');
+});
