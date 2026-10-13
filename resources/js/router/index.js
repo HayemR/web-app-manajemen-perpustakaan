@@ -1,5 +1,3 @@
-import { createRouter, createWebHistory } from 'vue-router'
-
 import Home from '../../pages/student/home.vue'
 import MyLibrary from '../../pages/student/my-library.vue'
 import BookDetail from '../../pages/student/book-detail.vue'
@@ -8,10 +6,10 @@ import Scan from '../../pages/student/scan.vue'
 import Account from '../../pages/student/account.vue'
 
 
-const routes = [
+const StudentRoutes = [
   {
     path: '/vue',
-    name: 'home',
+    name: 'student-home',
     component: Home,
   },
   {
