@@ -18,32 +18,50 @@ const routes = [
     path: '/admin/login',
     name: 'admin-login',
     component: AdminLogin,
+    meta: {
+      title: 'Login Admin - DigiNesh',
+    },
   },
   {
     path: '/admin/dashboard',
     name: 'admin-dashboard',
     component: AdminDashboard,
+    meta: {
+      title: 'Dashboard Admin - DigiNesh',
+    },
   },
   {
     path: '/admin/add-book',
     name: 'admin-add-book',
     component: AdminAddBook,
+    meta: {
+      title: 'Add-Book Admin - DigiNesh',
+    },
   },
 
   {
     path: '/admin/borrow-approval',
     name: 'admin-borrow-approval',
     component: AdminBorrowApproval,
+    meta: {
+      title: 'Borrow-Approval Admin - DigiNesh',
+    },
   },
   {
     path: '/admin/return-book',
     name: 'admin-return-book',
     component: AdminReturnBook,
+    meta: {
+      title: 'Return-Book Admin - DigiNesh',
+    },
   },
   {
     path: '/admin/borrowers',
     name: 'admin-borrowers',
     component: AdminBorrowers,
+    meta: {
+      title: 'Borrowers Admin - DigiNesh',
+    },
   },
 ]
 
@@ -57,5 +75,11 @@ const router = createRouter({
     }
   },
 })
+
+
+router.afterEach((to) => {
+  document.title = to.meta.title || 'DigiNesh'
+})
+
 
 export default router

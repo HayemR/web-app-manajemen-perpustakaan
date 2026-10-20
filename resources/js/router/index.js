@@ -11,30 +11,54 @@ const StudentRoutes = [
     path: '/vue',
     name: 'student-home',
     component: Home,
+    meta: {
+      title: 'Student Home - DigiNesh',
+    },
   },
+
   {
     path: '/my-library',
     name: 'my-library',
     component: MyLibrary,
+    meta: {
+      title: 'Student Library - DigiNesh',
+    },
   },
-  { path: '/book/:id', 
+
+  { 
+    path: '/book/:id', 
     name: 'book-detail', 
-    component: BookDetail 
+    component: BookDetail,
+    meta: {
+      title: 'Student Book Detail - DigiNesh',
+    },
 },
+
   {
     path: '/bookmarks',
     name: 'bookmarks',
     component: Bookmarks,
+     meta: {
+      title: 'Student Bookmarks - DigiNesh',
+    },
   },
+
   {
     path: '/scan',
     name: 'scan',
     component: Scan,
+     meta: {
+      title: 'Student Scan - DigiNesh',
+    },
   },
+
   {
     path: '/account',
     name: 'account',
     component: Account,
+     meta: {
+      title: 'Student Account - DigiNesh',
+    },
   }
 ]
 
