@@ -19,7 +19,7 @@ const routes = [
     name: 'admin-login',
     component: AdminLogin,
     meta: {
-      title: 'Login Admin - DigiNesh',
+      title: 'Admin Login - DigiNesh',
     },
   },
   {
