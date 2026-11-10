@@ -95,12 +95,7 @@ function triggerSSO() {
             <div
               class="flex h-11 w-11 items-center justify-center rounded-xl bg-[#26667F] text-white shadow-sm"
             >
-              <span
-                class="material-symbols-outlined text-2xl"
-                style="font-variation-settings: 'FILL' 1"
-              >
-                auto_stories
-              </span>
+              <img src="/images/image-logo-dark.svg" alt="Diginesh" class="h-9 w-9 object-contain" />
             </div>
 
             <div>

@@ -1,10 +1,7 @@
 <script setup>
 import { ref, onBeforeUnmount } from 'vue'
-import StudentNavbar from '../../components/student/StudentNavbar.vue'
-import StudentFooter from '../../components/student/StudentFooter.vue'
-
-const scannerBackground =
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuAdQ5msAymAVFQKMbxL99KdVq9ntbHjy3Lmi3ACAk5iTkO38D5RfJbk814LEkC_D0tefyuIA2tP9rq59SglrpokwEfiyszdGAxHh00isfLCcgztz5icOjUzPMDWFm8nN91TqcSViqhgOiS7gYod3plnmEhLh2cJ4IIQELuDTSUeelwaAMf3KF9OaCLs367NGUNvXtsQe_tfs0XBH_66qf6khTQKQBEl4dQ99wgWHqbBLzfO6JiTVW_-IQ'
+import StudentLayout from '../../components/student/StudentLayout.vue'
+import StudentPageHeading from '../../components/student/StudentPageHeading.vue'
 
 const bookCover =
   'https://lh3.googleusercontent.com/aida-public/AB6AXuBCHOBu_HEY84sLgXbJ5mRCo538jE6Akgn7fuSwUoFGvwEhNEJIOn-aQQNCRkzFm5O1MLJqmX8UbJm3fiByxf0nVf3Q5tbsgxMhig_iiW7pM09caWSariz0qHZE5syVtfpN0xBJzdHQD_BEtLv7ZBAAUKvH263XDn4hJliIjFV1uuHX11ZPhkW34auN3p51eqPJicZgi9Z1RIzQ6jlh_P4Sc72b-EA1h7xyMkIDBMAYETLTxkknqmaaFg'
@@ -13,8 +10,6 @@ const bookTitle = ref('To Kill a Mockingbird')
 const bookAuthor = ref('Harper Lee')
 const bookIsbn = ref('9780061120084')
 
-const selectedDevice = ref('camera')
-const flashEnabled = ref(false)
 const barcodeInput = ref('')
 const scanMessage = ref('')
 const scanMessageType = ref('success')
@@ -95,11 +90,13 @@ function resetScan() {
 async function startCamera() {
   cameraError.value = false
   cameraMessage.value = ''
+  isStartingCamera.value = true
 
   if (!navigator.mediaDevices?.getUserMedia) {
     cameraError.value = true
     cameraMessage.value =
       'Browser tidak mendukung kamera atau halaman belum menggunakan HTTPS/localhost.'
+    isStartingCamera.value = false
     return
   }
 
@@ -144,6 +141,8 @@ async function startCamera() {
     }
 
     stopCamera()
+  } finally {
+    isStartingCamera.value = false
   }
 }
 
@@ -165,50 +164,22 @@ onBeforeUnmount(() => {
 })
 </script>
 
-<style scoped>
-@keyframes scan {
-  0%,
-  100% {
-    top: 12%;
-  }
-
-  50% {
-    top: 86%;
-  }
-}
-</style>
-
 <template>
-  <div class="min-h-screen bg-[#DDF4E7] font-body-md text-[#0c1f17] antialiased">
-    <!-- NAVBAR -->
-    <StudentNavbar />
-
+  <StudentLayout>
     <!-- MAIN -->
-    <main class="w-full min-h-screen bg-[#DDF4E7] pt-20">
+    <main class="w-full min-h-screen bg-[#F4F6F8] pt-20">
       <div class="flex w-full flex-col">
         <div
           class="mx-auto flex w-full max-w-[1200px] flex-col gap-6 px-4 py-6 md:px-5"
         >
-          <!-- HEADER & BREADCRUMB -->
-          <section class="flex flex-col gap-2">
-            <div
-              class="flex flex-col justify-between gap-3 pt-1 md:flex-row md:items-end"
-            >
-              <div>
-                <h1
-                  class="text-[26px] font-bold tracking-tight text-[#124170] md:text-[32px] md:leading-10"
-                >
-                  Pindai untuk Meminjam Buku
-                </h1>
-
-                <p class="mt-1 max-w-2xl text-sm leading-relaxed text-[#6F8B95]">
-                  Arahkan barcode buku ke pemindai atau masukkan kode buku
-                  untuk melanjutkan proses peminjaman.
-                </p>
-              </div>
-
+          <StudentPageHeading
+            title="Pindai untuk Meminjam Buku"
+            description="Arahkan barcode buku ke pemindai atau masukkan kode buku untuk melanjutkan proses peminjaman."
+            eyebrow="Peminjaman mandiri"
+          >
+            <template #actions>
               <div
-                class="flex items-center gap-2 self-start rounded-xl bg-[#E2F9EC] px-3 py-2 text-[#26667F] shadow-sm md:self-auto"
+                class="flex items-center gap-2 rounded-lg border border-[#D4DEE5] bg-white px-3 py-2 text-[#315D78]"
               >
                 <span class="material-symbols-outlined text-xl">
                   schedule
@@ -218,72 +189,62 @@ onBeforeUnmount(() => {
                   Jam Layanan: 07.30–17.30
                 </span>
               </div>
-            </div>
-          </section>
+            </template>
+          </StudentPageHeading>
 
           <!-- MAIN WORKFLOW -->
           <section class="grid grid-cols-1 gap-6 lg:grid-cols-12">
             <!-- SCANNER -->
             <div class="flex flex-col gap-4 lg:col-span-7">
               <div
-                class="group relative flex min-h-[380px] flex-col justify-between overflow-hidden rounded-2xl bg-[#21342c] p-4 shadow-md sm:min-h-[440px] sm:p-6"
+                class="group relative flex min-h-[380px] flex-col justify-between overflow-hidden rounded-2xl bg-[#193042] p-4 shadow-md sm:min-h-[440px] sm:p-6"
               >
 
-                <!-- Background -->
-                <div
-                class="pointer-events-none absolute inset-0 z-0 scale-105 bg-cover bg-center opacity-40 blur-[2px]"
-                :style="{ backgroundImage: `url('${scannerBackground}')` }"
-                ></div>
-
-                <div
-                class="pointer-events-none absolute inset-0 z-0 bg-gradient-to-t from-[#21342c]/90 via-[#21342c]/40 to-[#21342c]/80"
-                ></div>
-                
                 <!-- Live Camera View -->
                 <div
-                class="relative z-10 my-auto h-[260px] w-full shrink-0 overflow-hidden rounded-xl bg-black sm:h-[320px]"
+                  class="relative z-10 my-auto h-[260px] w-full shrink-0 overflow-hidden rounded-xl bg-black sm:h-[320px]"
                 >
-                    <video
-                        ref="videoElement"
-                        autoplay
-                        muted
-                        playsinline
-                        class="absolute inset-0 z-0 block h-full w-full object-cover"
-                    ></video>
+                  <video
+                    ref="videoElement"
+                    autoplay
+                    muted
+                    playsinline
+                    class="absolute inset-0 z-0 block h-full w-full object-cover"
+                  ></video>
 
-                    <div
-                        v-if="!isCameraOn"
-                        class="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-[#21342c] px-4 text-center text-white"
-                    >
-                        <span class="material-symbols-outlined text-5xl text-[#67C090]">
-                        videocam
-                        </span>
+                  <div
+                    v-if="!isCameraOn"
+                    class="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-[#193042] px-4 text-center text-white"
+                  >
+                    <span class="material-symbols-outlined text-5xl text-[#67C090]">
+                      videocam
+                    </span>
 
-                        <p class="text-sm font-semibold">
-                        Kamera belum diaktifkan
-                        </p>
+                    <p class="text-sm font-semibold">
+                      Kamera belum diaktifkan
+                    </p>
 
-                        <p class="max-w-xs text-xs text-white/70">
-                        Tekan tombol di bawah untuk mengizinkan akses kamera.
-                        </p>
+                    <p class="max-w-xs text-xs text-white/70">
+                      Tekan tombol di bawah untuk mengizinkan akses kamera.
+                    </p>
+                  </div>
+
+                  <!-- Bingkai pemindai -->
+                  <div
+                    v-if="isCameraOn"
+                    class="pointer-events-none absolute inset-0 z-10 flex items-center justify-center"
+                  >
+                    <div class="relative h-36 w-64 max-w-[80%] sm:h-44 sm:w-72">
+                      <span class="absolute left-0 top-0 h-7 w-7 rounded-tl-lg border-l-4 border-t-4 border-[#67C090]"></span>
+                      <span class="absolute right-0 top-0 h-7 w-7 rounded-tr-lg border-r-4 border-t-4 border-[#67C090]"></span>
+                      <span class="absolute bottom-0 left-0 h-7 w-7 rounded-bl-lg border-b-4 border-l-4 border-[#67C090]"></span>
+                      <span class="absolute bottom-0 right-0 h-7 w-7 rounded-br-lg border-b-4 border-r-4 border-[#67C090]"></span>
+
+                      <div
+                        class="absolute inset-x-2 top-1/2 h-0.5 -translate-y-1/2 animate-pulse bg-[#67C090] shadow-[0_0_12px_#67C090]"
+                      ></div>
                     </div>
-
-                    <!-- Bingkai pemindai -->
-                    <div
-                        v-if="isCameraOn"
-                        class="pointer-events-none absolute inset-0 z-10 flex items-center justify-center"
-                    >
-                        <div class="relative h-36 w-64 max-w-[80%] sm:h-44 sm:w-72">
-                            <span class="absolute left-0 top-0 h-7 w-7 rounded-tl-lg border-l-4 border-t-4 border-[#67C090]"></span>
-                            <span class="absolute right-0 top-0 h-7 w-7 rounded-tr-lg border-r-4 border-t-4 border-[#67C090]"></span>
-                            <span class="absolute bottom-0 left-0 h-7 w-7 rounded-bl-lg border-b-4 border-l-4 border-[#67C090]"></span>
-                            <span class="absolute bottom-0 right-0 h-7 w-7 rounded-br-lg border-b-4 border-r-4 border-[#67C090]"></span>
-
-                            <div
-                                class="absolute inset-x-2 top-1/2 h-0.5 -translate-y-1/2 animate-pulse bg-[#67C090] shadow-[0_0_12px_#67C090]"
-                            ></div>
-                        </div>
-                    </div>
+                  </div>
                 </div>
          
                 <!-- Camera controls -->
@@ -293,7 +254,7 @@ onBeforeUnmount(() => {
                     type="button"
                     :disabled="isStartingCamera"
                     @click="startCamera"
-                    class="relative z-30 flex min-h-12 flex-1 cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#26667F] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#004e65] disabled:cursor-wait disabled:opacity-70"
+                    class="relative z-30 flex min-h-12 flex-1 cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#315D78] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#18394F] disabled:cursor-wait disabled:opacity-70"
                 >
                     <span class="material-symbols-outlined">
                     {{ isStartingCamera ? 'progress_activity' : 'videocam' }}
@@ -327,7 +288,7 @@ onBeforeUnmount(() => {
                   class="relative z-10 flex flex-col items-center justify-between gap-2 text-center sm:flex-row sm:text-left"
                 >
                   <div
-                    class="inline-flex items-center gap-2 rounded-full bg-[#21342c]/85 px-3 py-1.5 text-[11px] font-semibold text-white backdrop-blur-md"
+                    class="inline-flex items-center gap-2 rounded-full bg-[#193042]/85 px-3 py-1.5 text-[11px] font-semibold text-white backdrop-blur-md"
                   >
                     <span
                       class="material-symbols-outlined animate-pulse text-lg text-[#67C090]"
@@ -348,7 +309,7 @@ onBeforeUnmount(() => {
               <div class="rounded-2xl bg-white p-5 shadow-sm">
                 <div class="mb-3 flex items-start gap-3">
                   <div
-                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#E2F9EC] text-[#26667F]"
+                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#EAF0F4] text-[#315D78]"
                   >
                     <span class="material-symbols-outlined text-xl">
                       barcode
@@ -356,11 +317,11 @@ onBeforeUnmount(() => {
                   </div>
 
                   <div>
-                    <h2 class="font-semibold text-[#124170]">
+                    <h2 class="font-semibold text-[#20384D]">
                       Masukkan Kode Buku
                     </h2>
 
-                    <p class="mt-1 text-xs leading-relaxed text-[#6F8B95]">
+                    <p class="mt-1 text-xs leading-relaxed text-[#637587]">
                       Gunakan cara manual jika barcode tidak dapat dipindai.
                     </p>
                   </div>
@@ -375,12 +336,12 @@ onBeforeUnmount(() => {
                     type="text"
                     placeholder="Contoh: 9780061120084"
                     aria-label="Kode barcode buku"
-                    class="min-w-0 flex-1 rounded-xl border border-[#C2E2D4] bg-[#F8FCF9] px-4 py-3 text-sm text-[#124170] outline-none transition focus:border-[#26667F] focus:ring-2 focus:ring-[#26667F]/10"
+                    class="min-w-0 flex-1 rounded-xl border border-[#D4DEE5] bg-[#F7F9FA] px-4 py-3 text-sm text-[#20384D] outline-none transition focus:border-[#315D78] focus:ring-2 focus:ring-[#315D78]/10"
                   />
 
                   <button
                     type="submit"
-                    class="inline-flex items-center justify-center gap-2 rounded-xl bg-[#26667F] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#004e65]"
+                    class="inline-flex items-center justify-center gap-2 rounded-xl bg-[#315D78] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#18394F]"
                   >
                     <span class="material-symbols-outlined text-lg">
                       search
@@ -408,7 +369,7 @@ onBeforeUnmount(() => {
             <div class="flex flex-col gap-4 lg:col-span-5">
               <!-- Identification Status -->
               <div
-                class="flex items-center justify-between gap-3 rounded-xl bg-[#E8F8F0] px-4 py-3 shadow-sm"
+                class="flex items-center justify-between gap-3 rounded-xl bg-[#EDF3F5] px-4 py-3 shadow-sm"
               >
                 <div class="flex min-w-0 items-center gap-3">
                   <div
@@ -424,7 +385,7 @@ onBeforeUnmount(() => {
                       Buku Berhasil Dikenali
                     </p>
 
-                    <p class="mt-0.5 text-[11px] text-[#6F8B95]">
+                    <p class="mt-0.5 text-[11px] text-[#637587]">
                       Data buku ditemukan di katalog perpustakaan
                     </p>
                   </div>
@@ -441,7 +402,7 @@ onBeforeUnmount(() => {
               <div class="flex flex-col gap-4 rounded-2xl bg-white p-4 shadow-sm sm:p-5">
                 <div class="flex items-start gap-4">
                   <div
-                    class="relative aspect-[3/4] w-28 shrink-0 overflow-hidden rounded-xl bg-[#E2F9EC] shadow-md sm:w-32"
+                    class="relative aspect-[3/4] w-28 shrink-0 overflow-hidden rounded-xl bg-[#EAF0F4] shadow-md sm:w-32"
                   >
                     <img
                       :src="bookCover"
@@ -450,7 +411,7 @@ onBeforeUnmount(() => {
                     />
 
                     <span
-                      class="absolute left-2 top-2 rounded bg-white/90 px-1.5 py-0.5 text-[10px] font-semibold text-[#124170] shadow-sm backdrop-blur-sm"
+                      class="absolute left-2 top-2 rounded bg-white/90 px-1.5 py-0.5 text-[10px] font-semibold text-[#20384D] shadow-sm backdrop-blur-sm"
                     >
                       Sampul keras
                     </span>
@@ -458,35 +419,35 @@ onBeforeUnmount(() => {
 
                   <div class="flex min-w-0 flex-1 flex-col">
                     <div
-                      class="mb-2 inline-flex w-fit items-center gap-1.5 rounded-full bg-[#E8F8F0] px-2 py-1 text-[10px] font-semibold text-[#006c45]"
+                      class="mb-2 inline-flex w-fit items-center gap-1.5 rounded-full bg-[#EDF3F5] px-2 py-1 text-[10px] font-semibold text-[#006c45]"
                     >
                       <span class="h-1.5 w-1.5 rounded-full bg-[#67C090]"></span>
                       Tersedia untuk Dipinjam
                     </div>
 
                     <h2
-                      class="line-clamp-2 text-lg font-bold leading-snug text-[#124170]"
+                      class="line-clamp-2 text-lg font-bold leading-snug text-[#20384D]"
                     >
                       {{ bookTitle }}
                     </h2>
 
-                    <p class="mt-1 text-sm text-[#6F8B95]">
+                    <p class="mt-1 text-sm text-[#637587]">
                       {{ bookAuthor }}
                     </p>
 
-                    <p class="mt-1 text-xs text-[#26667F]">
+                    <p class="mt-1 text-xs text-[#315D78]">
                       Fiksi Klasik · 1960
                     </p>
 
                     <div class="mt-3 flex flex-wrap gap-1.5">
                       <span
-                        class="rounded bg-[#E2F9EC] px-2 py-1 font-mono text-[10px] font-medium text-[#124170]"
+                        class="rounded bg-[#EAF0F4] px-2 py-1 font-mono text-[10px] font-medium text-[#20384D]"
                       >
                         #LIT-823.9
                       </span>
 
                       <span
-                        class="rounded bg-[#E2F9EC] px-2 py-1 font-mono text-[10px] text-[#6F8B95]"
+                        class="rounded bg-[#EAF0F4] px-2 py-1 font-mono text-[10px] text-[#637587]"
                       >
                         ISBN: {{ bookIsbn }}
                       </span>
@@ -497,10 +458,10 @@ onBeforeUnmount(() => {
                 <!-- Loan Metrics -->
                 <div class="grid grid-cols-2 gap-2 pt-1">
                   <div
-                    class="flex flex-col justify-between rounded-xl bg-[#E2F9EC] p-3"
+                    class="flex flex-col justify-between rounded-xl bg-[#EAF0F4] p-3"
                   >
                     <div
-                      class="mb-2 flex items-center justify-between gap-1 text-[#26667F]"
+                      class="mb-2 flex items-center justify-between gap-1 text-[#315D78]"
                     >
                       <span class="text-[10px] font-semibold uppercase tracking-wide">
                         Durasi Pinjam
@@ -511,20 +472,20 @@ onBeforeUnmount(() => {
                       </span>
                     </div>
 
-                    <span class="text-xl font-bold text-[#124170]">
+                    <span class="text-xl font-bold text-[#20384D]">
                       14 Hari
                     </span>
 
-                    <span class="mt-1 text-[11px] text-[#6F8B95]">
+                    <span class="mt-1 text-[11px] text-[#637587]">
                       Jatuh tempo: 14 hari
                     </span>
                   </div>
 
                   <div
-                    class="flex flex-col justify-between rounded-xl bg-[#E2F9EC] p-3"
+                    class="flex flex-col justify-between rounded-xl bg-[#EAF0F4] p-3"
                   >
                     <div
-                      class="mb-2 flex items-center justify-between gap-1 text-[#26667F]"
+                      class="mb-2 flex items-center justify-between gap-1 text-[#315D78]"
                     >
                       <span class="text-[10px] font-semibold uppercase tracking-wide">
                         Kuota Pinjaman
@@ -536,12 +497,12 @@ onBeforeUnmount(() => {
                     </div>
 
                     <div class="flex flex-wrap items-baseline gap-1">
-                      <span class="text-xl font-bold text-[#124170]">
+                      <span class="text-xl font-bold text-[#20384D]">
                         {{ activeLoans }} dari {{ loanLimit }}
                       </span>
                     </div>
 
-                    <span class="mt-1 text-[11px] text-[#6F8B95]">
+                    <span class="mt-1 text-[11px] text-[#637587]">
                       Buku sedang dipinjam
                     </span>
 
@@ -552,7 +513,7 @@ onBeforeUnmount(() => {
                         class="h-3 w-3 rounded-full"
                         :class="
                           slot <= activeLoans
-                            ? 'bg-[#26667F]'
+                            ? 'bg-[#315D78]'
                             : 'bg-[#C0C8CD]'
                         "
                       ></span>
@@ -566,20 +527,20 @@ onBeforeUnmount(() => {
 
                 <!-- Policy -->
                 <div
-                  class="flex items-start gap-3 rounded-xl bg-[#DDF4E7]/60 p-3"
+                  class="flex items-start gap-3 rounded-xl bg-[#F4F6F8]/60 p-3"
                 >
                   <span
-                    class="material-symbols-outlined mt-0.5 shrink-0 text-xl text-[#26667F]"
+                    class="material-symbols-outlined mt-0.5 shrink-0 text-xl text-[#315D78]"
                   >
                     info
                   </span>
 
                   <div>
-                    <h3 class="text-sm font-semibold text-[#124170]">
+                    <h3 class="text-sm font-semibold text-[#20384D]">
                       Kebijakan Peminjaman
                     </h3>
 
-                    <p class="mt-1 text-xs leading-relaxed text-[#6F8B95]">
+                    <p class="mt-1 text-xs leading-relaxed text-[#637587]">
                       Buku harus dikembalikan atau diperpanjang sebelum batas
                       waktu peminjaman. Perpanjangan dapat dilakukan maksimal
                       dua kali selama tidak ada antrean pemesanan dari siswa
@@ -594,7 +555,7 @@ onBeforeUnmount(() => {
                     type="button"
                     :disabled="isProcessing || isComplete"
                     @click="confirmBorrow"
-                    class="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#26667F] text-sm font-semibold text-white shadow-md transition hover:bg-[#004e65] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-80"
+                    class="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#315D78] text-sm font-semibold text-white shadow-md transition hover:bg-[#18394F] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-80"
                   >
                     <span
                       v-if="isProcessing"
@@ -623,7 +584,7 @@ onBeforeUnmount(() => {
 
                   <p
                     v-if="isComplete"
-                    class="rounded-lg bg-[#E8F8F0] p-3 text-center text-xs leading-relaxed text-[#006c45]"
+                    class="rounded-lg bg-[#EDF3F5] p-3 text-center text-xs leading-relaxed text-[#006c45]"
                     role="status"
                   >
                     Simulasi peminjaman selesai. Data belum disimpan ke server.
@@ -632,7 +593,7 @@ onBeforeUnmount(() => {
                   <button
                     type="button"
                     @click="resetScan"
-                    class="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-white text-sm font-semibold text-[#26667F] transition hover:bg-[#E2F9EC]"
+                    class="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-white text-sm font-semibold text-[#315D78] transition hover:bg-[#EAF0F4]"
                   >
                     <span class="material-symbols-outlined text-lg">
                       close
@@ -651,7 +612,7 @@ onBeforeUnmount(() => {
               class="flex items-start gap-3 rounded-2xl bg-white p-5 shadow-sm"
             >
               <div
-                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#E2F9EC] text-[#26667F]"
+                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#EAF0F4] text-[#315D78]"
               >
                 <span class="material-symbols-outlined text-xl">
                   center_focus_strong
@@ -659,11 +620,11 @@ onBeforeUnmount(() => {
               </div>
 
               <div>
-                <h2 class="text-sm font-semibold text-[#124170]">
+                <h2 class="text-sm font-semibold text-[#20384D]">
                   Posisi Barcode yang Tepat
                 </h2>
 
-                <p class="mt-1 text-xs leading-relaxed text-[#6F8B95]">
+                <p class="mt-1 text-xs leading-relaxed text-[#637587]">
                   Letakkan barcode sekitar 10–15 cm dari pemindai. Pastikan
                   sampul buku rata dan tidak memantulkan cahaya.
                 </p>
@@ -674,7 +635,7 @@ onBeforeUnmount(() => {
               class="flex items-start gap-3 rounded-2xl bg-white p-5 shadow-sm"
             >
               <div
-                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#E2F9EC] text-[#26667F]"
+                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#EAF0F4] text-[#315D78]"
               >
                 <span class="material-symbols-outlined text-xl">
                   receipt_long
@@ -682,11 +643,11 @@ onBeforeUnmount(() => {
               </div>
 
               <div>
-                <h2 class="text-sm font-semibold text-[#124170]">
+                <h2 class="text-sm font-semibold text-[#20384D]">
                   Bukti Peminjaman Digital
                 </h2>
 
-                <p class="mt-1 text-xs leading-relaxed text-[#6F8B95]">
+                <p class="mt-1 text-xs leading-relaxed text-[#637587]">
                   Setelah peminjaman dikonfirmasi, bukti transaksi dan
                   pengingat pengembalian dapat diberikan melalui akun siswa.
                 </p>
@@ -697,7 +658,7 @@ onBeforeUnmount(() => {
               class="flex items-start gap-3 rounded-2xl bg-white p-5 shadow-sm"
             >
               <div
-                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#E2F9EC] text-[#26667F]"
+                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#EAF0F4] text-[#315D78]"
               >
                 <span class="material-symbols-outlined text-xl">
                   support_agent
@@ -705,11 +666,11 @@ onBeforeUnmount(() => {
               </div>
 
               <div>
-                <h2 class="text-sm font-semibold text-[#124170]">
+                <h2 class="text-sm font-semibold text-[#20384D]">
                   Butuh Bantuan Pustakawan?
                 </h2>
 
-                <p class="mt-1 text-xs leading-relaxed text-[#6F8B95]">
+                <p class="mt-1 text-xs leading-relaxed text-[#637587]">
                   Jika barcode rusak atau tidak terbaca, silakan kunjungi meja
                   pustakawan untuk mendapatkan bantuan.
                 </p>
@@ -720,7 +681,5 @@ onBeforeUnmount(() => {
       </div>
     </main>
 
-    <!-- FOOTER -->
-    <StudentFooter />
-  </div>
+  </StudentLayout>
 </template>

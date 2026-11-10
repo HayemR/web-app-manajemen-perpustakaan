@@ -81,5 +81,38 @@ router.afterEach((to) => {
   document.title = to.meta.title || 'DigiNesh'
 })
 
+router.beforeEach(async (to) => {
+  const requiresStudentAuth = to.matched.some(
+    (route) => route.meta.requiresStudentAuth,
+  )
+  const isStudentLogin = to.name === 'student-login'
+
+  if (!requiresStudentAuth && !isStudentLogin) {
+    return true
+  }
+
+  try {
+    const response = await fetch('/student/session', {
+      credentials: 'same-origin',
+      headers: {
+        Accept: 'application/json',
+      },
+    })
+
+    if (response.status === 401) {
+      return requiresStudentAuth ? { name: 'student-login' } : true
+    }
+
+    if (!response.ok) {
+      throw new Error(`Session check failed with status ${response.status}.`)
+    }
+
+    return isStudentLogin ? { name: 'student-home' } : true
+  } catch (error) {
+    console.error('Unable to verify the student session.', error)
+
+    return false
+  }
+})
 
 export default router

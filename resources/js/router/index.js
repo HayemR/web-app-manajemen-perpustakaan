@@ -4,16 +4,21 @@ import BookDetail from '../../pages/student/book-detail.vue'
 import Bookmarks from '../../pages/student/bookmarks.vue'
 import Scan from '../../pages/student/scan.vue'
 import Account from '../../pages/student/account.vue'
-
+import LoginPage from '../../pages/student/login-page.vue'
 
 const StudentRoutes = [
   {
-    path: '/vue',
+    path: '/home',
     name: 'student-home',
     component: Home,
     meta: {
       title: 'Student Home - DigiNesh',
+      requiresStudentAuth: true,
     },
+  },
+  {
+    path: '/vue',
+    redirect: { name: 'student-home' },
   },
 
   {
@@ -22,6 +27,7 @@ const StudentRoutes = [
     component: MyLibrary,
     meta: {
       title: 'Student Library - DigiNesh',
+      requiresStudentAuth: true,
     },
   },
 
@@ -31,6 +37,7 @@ const StudentRoutes = [
     component: BookDetail,
     meta: {
       title: 'Student Book Detail - DigiNesh',
+      requiresStudentAuth: true,
     },
 },
 
@@ -40,6 +47,7 @@ const StudentRoutes = [
     component: Bookmarks,
      meta: {
       title: 'Student Bookmarks - DigiNesh',
+      requiresStudentAuth: true,
     },
   },
 
@@ -49,6 +57,7 @@ const StudentRoutes = [
     component: Scan,
      meta: {
       title: 'Student Scan - DigiNesh',
+      requiresStudentAuth: true,
     },
   },
 
@@ -58,8 +67,17 @@ const StudentRoutes = [
     component: Account,
      meta: {
       title: 'Student Account - DigiNesh',
+      requiresStudentAuth: true,
     },
-  }
+  },
+  {
+    path: '/login',
+    name: 'student-login',
+    component: LoginPage,
+    meta: {
+      title: 'Masuk - DigiNesh',
+    },
+  },
 ]
 
 export default StudentRoutes

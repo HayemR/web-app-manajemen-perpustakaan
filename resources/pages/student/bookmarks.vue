@@ -1,7 +1,7 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
-import StudentNavbar from '../../components/student/StudentNavbar.vue'
-import StudentFooter from '../../components/student/StudentFooter.vue'
+import StudentLayout from '../../components/student/StudentLayout.vue'
+import StudentPageHeading from '../../components/student/StudentPageHeading.vue'
 
 const books = ref([
   {
@@ -220,8 +220,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#DDF4E7]">
-    <StudentNavbar />
+  <StudentLayout>
 
     <!-- Notifikasi -->
     <Transition
@@ -234,27 +233,27 @@ onBeforeUnmount(() => {
     >
       <div
         v-if="toast.show"
-        class="fixed bottom-5 right-4 z-[70] flex w-[calc(100%-2rem)] max-w-md items-start gap-3 rounded-xl border border-[#C2E2D4] bg-white p-4 shadow-xl sm:right-6"
+        class="fixed bottom-5 right-4 z-[70] flex w-[calc(100%-2rem)] max-w-md items-start gap-3 rounded-xl border border-[#D4DEE5] bg-white p-4 shadow-xl sm:right-6"
         role="status"
         aria-live="polite"
       >
         <div
-          class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#E2F9EC] text-[#006C45]"
+          class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#EAF0F4] text-[#006C45]"
         >
           <span class="material-symbols-outlined">check_circle</span>
         </div>
         <div class="min-w-0 flex-1">
-          <p class="text-sm font-semibold text-[#124170]">
+          <p class="text-sm font-semibold text-[#20384D]">
             {{ toast.title }}
           </p>
-          <p class="mt-1 text-xs leading-5 text-[#6F8B95]">
+          <p class="mt-1 text-xs leading-5 text-[#637587]">
             {{ toast.message }}
           </p>
         </div>
         <button
           type="button"
           aria-label="Tutup notifikasi"
-          class="text-[#6F8B95] hover:text-[#124170]"
+          class="text-[#637587] hover:text-[#20384D]"
           @click="toast.show = false"
         >
           <span class="material-symbols-outlined text-lg">close</span>
@@ -263,45 +262,28 @@ onBeforeUnmount(() => {
     </Transition>
 
     <!-- Konten utama -->
-    <main class="min-h-screen w-full bg-[#DDF4E7] pt-20">
+    <main class="min-h-screen w-full bg-[#F4F6F8] pt-20">
       <div
         class="mx-auto flex w-full max-w-[1200px] flex-col gap-6 px-4 py-6 md:px-6 lg:py-8"
       >
 
-        <!-- Judul halaman -->
-        <section
-          class="flex flex-col justify-between gap-4 lg:flex-row lg:items-end"
+        <StudentPageHeading
+          title="Buku Favorit Saya"
+          description="Kumpulan buku pilihan untuk bahan belajar, penelitian, dan bacaan berikutnya."
+          :eyebrow="`${totalBooks} buku tersimpan`"
         >
-          <div class="flex flex-col gap-2">
-            <div class="flex flex-wrap items-center gap-3">
-              <h1
-                class="text-2xl font-bold tracking-tight text-[#124170] sm:text-3xl"
-              >
-                Buku Favorit Saya
-              </h1>
-              <span
-                class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-[#26667F] shadow-sm"
-              >
-                {{ totalBooks }} buku tersimpan
-              </span>
-            </div>
-
-            <p class="max-w-2xl text-sm leading-6 text-[#6F8B95]">
-              Kumpulan buku pilihan untuk bahan belajar, penelitian, dan bacaan
-              berikutnya.
-            </p>
-          </div>
-
-          <button
-            v-if="totalBooks > 0"
-            type="button"
-            class="inline-flex items-center justify-center gap-2 self-start rounded-xl bg-white px-4 py-2.5 text-xs font-semibold text-[#6F8B95] shadow-sm transition-colors hover:bg-[#FDE8E8] hover:text-[#BA1A1A] sm:self-auto"
-            @click="showClearDialog = true"
-          >
-            <span class="material-symbols-outlined text-lg">delete_sweep</span>
-            Hapus Semua
-          </button>
-        </section>
+          <template #actions>
+            <button
+              v-if="totalBooks > 0"
+              type="button"
+              class="inline-flex items-center justify-center gap-2 rounded-lg border border-[#D4DEE5] bg-white px-4 py-2.5 text-xs font-semibold text-[#315D78] transition-colors hover:bg-[#F4F6F8] hover:text-[#20384D]"
+              @click="showClearDialog = true"
+            >
+              <span class="material-symbols-outlined text-lg">delete_sweep</span>
+              Hapus Semua
+            </button>
+          </template>
+        </StudentPageHeading>
 
         <!-- Banner informasi -->
         <Transition
@@ -317,14 +299,14 @@ onBeforeUnmount(() => {
             class="relative flex items-start gap-3 overflow-hidden rounded-xl bg-white p-4 shadow-sm sm:items-center sm:p-5"
           >
             <div
-              class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#E2F9EC] text-[#26667F]"
+              class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#EAF0F4] text-[#315D78]"
             >
               <span class="material-symbols-outlined text-2xl">
                 auto_stories
               </span>
             </div>
 
-            <p class="relative z-10 flex-1 pr-1 text-sm leading-6 text-[#0c1f17]">
+            <p class="relative z-10 flex-1 pr-1 text-sm leading-6 text-[#293A49]">
               Simpan buku yang ingin kamu baca atau gunakan untuk tugas sekolah.
               Temukan kembali koleksimu dengan mudah melalui pencarian dan
               filter kategori.
@@ -333,14 +315,14 @@ onBeforeUnmount(() => {
             <button
               type="button"
               aria-label="Tutup informasi"
-              class="relative z-10 rounded-lg p-1 text-[#6F8B95] transition-colors hover:text-[#124170]"
+              class="relative z-10 rounded-lg p-1 text-[#637587] transition-colors hover:text-[#20384D]"
               @click="showBanner = false"
             >
               <span class="material-symbols-outlined">close</span>
             </button>
 
             <div
-              class="pointer-events-none absolute -bottom-8 -right-8 h-28 w-28 rounded-full bg-[#DDF4E7] opacity-60"
+              class="pointer-events-none absolute -bottom-8 -right-8 h-28 w-28 rounded-full bg-[#F4F6F8] opacity-60"
             ></div>
           </section>
         </Transition>
@@ -356,7 +338,7 @@ onBeforeUnmount(() => {
               >
                 <div class="relative min-w-0 flex-1">
                   <span
-                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-xl text-[#26667F]"
+                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-xl text-[#315D78]"
                   >
                     search
                   </span>
@@ -366,7 +348,7 @@ onBeforeUnmount(() => {
                     v-model="searchQuery"
                     type="search"
                     placeholder="Cari judul, penulis, nomor panggil..."
-                    class="h-11 w-full rounded-xl bg-[#E2F9EC] py-2 pl-10 pr-3 text-sm text-[#124170] outline-none transition-all placeholder:text-[#6F8B95] focus:bg-white focus:ring-2 focus:ring-[#26667F]/20"
+                    class="h-11 w-full rounded-xl bg-[#EAF0F4] py-2 pl-10 pr-3 text-sm text-[#20384D] outline-none transition-all placeholder:text-[#637587] focus:bg-white focus:ring-2 focus:ring-[#315D78]/20"
                   />
                 </div>
 
@@ -375,7 +357,7 @@ onBeforeUnmount(() => {
                     <select
                       v-model="sortBy"
                       aria-label="Urutkan buku"
-                      class="h-11 w-full appearance-none rounded-xl bg-[#E2F9EC] py-2 pl-3 pr-9 text-xs font-semibold text-[#124170] outline-none focus:ring-2 focus:ring-[#26667F]/20 sm:w-auto"
+                      class="h-11 w-full appearance-none rounded-xl bg-[#EAF0F4] py-2 pl-3 pr-9 text-xs font-semibold text-[#20384D] outline-none focus:ring-2 focus:ring-[#315D78]/20 sm:w-auto"
                     >
                       <option value="recent">Terbaru disimpan</option>
                       <option value="title">Judul A–Z</option>
@@ -383,14 +365,14 @@ onBeforeUnmount(() => {
                       <option value="shelf">Lokasi rak</option>
                     </select>
                     <span
-                      class="material-symbols-outlined pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-lg text-[#6F8B95]"
+                      class="material-symbols-outlined pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-lg text-[#637587]"
                     >
                       expand_more
                     </span>
                   </div>
 
                   <div
-                    class="flex shrink-0 items-center rounded-xl bg-[#E2F9EC] p-1"
+                    class="flex shrink-0 items-center rounded-xl bg-[#EAF0F4] p-1"
                   >
                     <button
                       type="button"
@@ -399,8 +381,8 @@ onBeforeUnmount(() => {
                       class="flex h-9 w-9 items-center justify-center rounded-lg transition-all"
                       :class="
                         viewMode === 'grid'
-                          ? 'bg-white text-[#124170] shadow-sm'
-                          : 'text-[#6F8B95] hover:text-[#124170]'
+                          ? 'bg-white text-[#20384D] shadow-sm'
+                          : 'text-[#637587] hover:text-[#20384D]'
                       "
                       @click="viewMode = 'grid'"
                     >
@@ -413,8 +395,8 @@ onBeforeUnmount(() => {
                       class="flex h-9 w-9 items-center justify-center rounded-lg transition-all"
                       :class="
                         viewMode === 'list'
-                          ? 'bg-white text-[#124170] shadow-sm'
-                          : 'text-[#6F8B95] hover:text-[#124170]'
+                          ? 'bg-white text-[#20384D] shadow-sm'
+                          : 'text-[#637587] hover:text-[#20384D]'
                       "
                       @click="viewMode = 'list'"
                     >
@@ -444,8 +426,8 @@ onBeforeUnmount(() => {
                   class="shrink-0 rounded-xl px-3.5 py-2 text-xs font-semibold transition-all"
                   :class="
                     activeFilter === filter.value
-                      ? 'bg-[#26667F] text-white shadow-sm'
-                      : 'bg-[#E2F9EC] text-[#26667F] hover:bg-[#D7EEE1]'
+                      ? 'bg-[#315D78] text-white shadow-sm'
+                      : 'bg-[#EAF0F4] text-[#315D78] hover:bg-[#DFE8ED]'
                   "
                   @click="setFilter(filter.value)"
                 >
@@ -475,7 +457,7 @@ onBeforeUnmount(() => {
                 >
                   <!-- Sampul -->
                   <div
-                    class="group relative h-36 w-24 shrink-0 overflow-hidden rounded-xl bg-[#E2F9EC] shadow-sm ring-1 ring-[#124170]/10"
+                    class="group relative h-36 w-24 shrink-0 overflow-hidden rounded-xl bg-[#EAF0F4] shadow-sm ring-1 ring-[#20384D]/10"
                   >
 
                     <RouterLink
@@ -492,7 +474,7 @@ onBeforeUnmount(() => {
                     </RouterLink>
 
                     <span
-                      class="pointer-events-none absolute left-1.5 top-1.5 max-w-[calc(100%-12px)] truncate rounded-md bg-white/95 px-1.5 py-1 text-[9px] font-bold text-[#124170] shadow-sm backdrop-blur-sm"
+                      class="pointer-events-none absolute left-1.5 top-1.5 max-w-[calc(100%-12px)] truncate rounded-md bg-white/95 px-1.5 py-1 text-[9px] font-bold text-[#20384D] shadow-sm backdrop-blur-sm"
                     >
                       {{ book.badge }}
                     </span>
@@ -503,7 +485,7 @@ onBeforeUnmount(() => {
                   <div class="flex min-w-0 flex-1 flex-col gap-1">
                     <div class="flex items-start gap-1">
                       <h2
-                        class="min-w-0 flex-1 text-sm font-semibold leading-5 text-[#124170] sm:text-base"
+                        class="min-w-0 flex-1 text-sm font-semibold leading-5 text-[#20384D] sm:text-base"
                       >
                         {{ book.title }}
                       </h2>
@@ -512,7 +494,7 @@ onBeforeUnmount(() => {
                         type="button"
                         :aria-label="`Hapus bookmark ${book.title}`"
                         title="Hapus dari bookmark"
-                        class="shrink-0 rounded-lg p-1 text-[#26667F] transition-colors hover:bg-[#FDE8E8] hover:text-[#BA1A1A]"
+                        class="shrink-0 rounded-lg p-1 text-[#315D78] transition-colors hover:bg-[#FDE8E8] hover:text-[#BA1A1A]"
                         @click="removeBookmark(book)"
                       >
                         <span
@@ -524,24 +506,24 @@ onBeforeUnmount(() => {
                       </button>
                     </div>
 
-                    <p class="text-xs text-[#6F8B95]">
+                    <p class="text-xs text-[#637587]">
                       {{ book.author }}
                     </p>
 
                     <div class="mt-2 flex flex-wrap gap-1.5">
                       <span
-                        class="rounded-md bg-[#E2F9EC] px-2 py-1 text-[10px] font-semibold text-[#26667F]"
+                        class="rounded-md bg-[#EAF0F4] px-2 py-1 text-[10px] font-semibold text-[#315D78]"
                       >
                         {{ book.categoryLabel }}
                       </span>
                       <span
-                        class="rounded-md bg-[#E2F9EC] px-2 py-1 text-[10px] text-[#26667F]"
+                        class="rounded-md bg-[#EAF0F4] px-2 py-1 text-[10px] text-[#315D78]"
                       >
                         {{ book.subject }}
                       </span>
                     </div>
 
-                    <p class="mt-1 font-mono text-[11px] text-[#6F8B95]">
+                    <p class="mt-1 font-mono text-[11px] text-[#637587]">
                       No. panggil {{ book.code }}
                     </p>
                   </div>
@@ -555,14 +537,14 @@ onBeforeUnmount(() => {
               class="flex flex-col items-center justify-center rounded-xl bg-white px-6 py-12 text-center shadow-sm sm:py-16"
             >
               <div
-                class="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#E2F9EC] text-[#26667F]"
+                class="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#EAF0F4] text-[#315D78]"
               >
                 <span class="material-symbols-outlined text-3xl">
                   {{ totalBooks === 0 ? 'bookmark_remove' : 'search_off' }}
                 </span>
               </div>
 
-              <h2 class="mt-4 text-lg font-semibold text-[#124170]">
+              <h2 class="mt-4 text-lg font-semibold text-[#20384D]">
                 {{
                   totalBooks === 0
                     ? 'Belum ada buku tersimpan'
@@ -570,7 +552,7 @@ onBeforeUnmount(() => {
                 }}
               </h2>
 
-              <p class="mt-2 max-w-sm text-sm leading-6 text-[#6F8B95]">
+              <p class="mt-2 max-w-sm text-sm leading-6 text-[#637587]">
                 {{
                   totalBooks === 0
                     ? 'Tambahkan buku ke bookmark dari katalog agar mudah ditemukan kembali.'
@@ -580,8 +562,8 @@ onBeforeUnmount(() => {
 
               <RouterLink
                 v-if="totalBooks === 0"
-                to="/vue"
-                class="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#26667F] px-4 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-[#124170]"
+                to="/home"
+                class="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#315D78] px-4 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-[#20384D]"
               >
                 <span class="material-symbols-outlined text-base">
                   auto_stories
@@ -591,7 +573,7 @@ onBeforeUnmount(() => {
 
               <button
                 v-else
-                class="mt-5 rounded-xl bg-[#26667F] px-4 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-[#124170]"
+                class="mt-5 rounded-xl bg-[#315D78] px-4 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-[#20384D]"
                 @click="
                   searchQuery = '';
                   activeFilter = 'all';
@@ -603,11 +585,11 @@ onBeforeUnmount(() => {
 
             <!-- Ringkasan daftar -->
             <div
-              class="flex flex-col gap-2 rounded-xl bg-white p-4 text-xs text-[#6F8B95] shadow-sm sm:flex-row sm:items-center sm:justify-between"
+              class="flex flex-col gap-2 rounded-xl bg-white p-4 text-xs text-[#637587] shadow-sm sm:flex-row sm:items-center sm:justify-between"
             >
               <span>
                 Menampilkan
-                <strong class="text-[#124170]">
+                <strong class="text-[#20384D]">
                   {{ filteredBooks.length }} dari {{ totalBooks }}
                 </strong>
                 buku tersimpan
@@ -631,33 +613,33 @@ onBeforeUnmount(() => {
               class="flex flex-col gap-4 rounded-xl bg-white p-5 shadow-sm"
             >
               <div class="flex items-center justify-between gap-2">
-                <h2 class="text-lg font-semibold text-[#124170]">
+                <h2 class="text-lg font-semibold text-[#20384D]">
                   Ringkasan Koleksi
                 </h2>
-                <span class="material-symbols-outlined text-[#26667F]">
+                <span class="material-symbols-outlined text-[#315D78]">
                   pie_chart
                 </span>
               </div>
 
               <!-- Kuota peminjaman -->
-              <div class="flex flex-col gap-3 rounded-xl bg-[#E2F9EC] p-4">
+              <div class="flex flex-col gap-3 rounded-xl bg-[#EAF0F4] p-4">
                 <div class="flex items-center justify-between gap-2">
-                  <span class="text-xs font-semibold text-[#124170]">
+                  <span class="text-xs font-semibold text-[#20384D]">
                     Kuota Peminjaman
                   </span>
-                  <span class="text-lg font-bold text-[#26667F]">
+                  <span class="text-lg font-bold text-[#315D78]">
                     {{ loanCount }} / 3
                   </span>
                 </div>
 
-                <p class="text-xs leading-5 text-[#6F8B95]">
+                <p class="text-xs leading-5 text-[#637587]">
                   Jumlah buku pada daftar ini yang sedang dipinjam. Batas
                   peminjaman perlu mengikuti kebijakan perpustakaan.
                 </p>
 
                 <div class="h-2.5 overflow-hidden rounded-full bg-white">
                   <div
-                    class="h-full rounded-full bg-[#26667F] transition-all duration-300"
+                    class="h-full rounded-full bg-[#315D78] transition-all duration-300"
                     :style="{
                       width: `${Math.min((loanCount / 3) * 100, 100)}%`,
                     }"
@@ -668,21 +650,21 @@ onBeforeUnmount(() => {
               <!-- Statistik -->
               <div class="flex flex-col gap-1">
                 <div
-                  class="flex items-center justify-between rounded-lg px-2 py-3 transition-colors hover:bg-[#E2F9EC]"
+                  class="flex items-center justify-between rounded-lg px-2 py-3 transition-colors hover:bg-[#EAF0F4]"
                 >
-                  <div class="flex items-center gap-2 text-sm text-[#0c1f17]">
-                    <span class="h-2.5 w-2.5 rounded-full bg-[#26667F]"></span>
+                  <div class="flex items-center gap-2 text-sm text-[#293A49]">
+                    <span class="h-2.5 w-2.5 rounded-full bg-[#315D78]"></span>
                     Total buku tersimpan
                   </div>
-                  <span class="text-sm font-semibold text-[#124170]">
+                  <span class="text-sm font-semibold text-[#20384D]">
                     {{ totalBooks }} buku
                   </span>
                 </div>
 
                 <div
-                  class="flex items-center justify-between rounded-lg px-2 py-3 transition-colors hover:bg-[#E2F9EC]"
+                  class="flex items-center justify-between rounded-lg px-2 py-3 transition-colors hover:bg-[#EAF0F4]"
                 >
-                  <div class="flex items-center gap-2 text-sm text-[#0c1f17]">
+                  <div class="flex items-center gap-2 text-sm text-[#293A49]">
                     <span class="h-2.5 w-2.5 rounded-full bg-[#67C090]"></span>
                     Buku tersedia
                   </div>
@@ -692,9 +674,9 @@ onBeforeUnmount(() => {
                 </div>
 
                 <div
-                  class="flex items-center justify-between rounded-lg px-2 py-3 transition-colors hover:bg-[#E2F9EC]"
+                  class="flex items-center justify-between rounded-lg px-2 py-3 transition-colors hover:bg-[#EAF0F4]"
                 >
-                  <div class="flex items-center gap-2 text-sm text-[#0c1f17]">
+                  <div class="flex items-center gap-2 text-sm text-[#293A49]">
                     <span class="h-2.5 w-2.5 rounded-full bg-[#E55353]"></span>
                     Sedang dipinjam
                   </div>
@@ -711,58 +693,58 @@ onBeforeUnmount(() => {
             >
               <div class="flex items-center justify-between gap-2">
                 <div class="flex items-center gap-2">
-                  <span class="material-symbols-outlined text-[#26667F]">
+                  <span class="material-symbols-outlined text-[#315D78]">
                     map
                   </span>
-                  <h2 class="text-base font-semibold text-[#124170]">
+                  <h2 class="text-base font-semibold text-[#20384D]">
                     Panduan Lokasi Rak
                   </h2>
                 </div>
 
                 <span
-                  class="rounded-full bg-[#E8F8F0] px-2 py-1 text-[10px] font-semibold text-[#006C45]"
+                  class="rounded-full bg-[#EDF3F5] px-2 py-1 text-[10px] font-semibold text-[#006C45]"
                 >
                   Sayap Utama
                 </span>
               </div>
 
-              <p class="text-xs leading-5 text-[#6F8B95]">
+              <p class="text-xs leading-5 text-[#637587]">
                 Temukan buku yang tersedia berdasarkan lokasi rak di
                 perpustakaan sekolah.
               </p>
 
               <div class="flex flex-col gap-2">
                 <div
-                  class="flex items-center gap-3 rounded-xl bg-[#E2F9EC] p-3"
+                  class="flex items-center gap-3 rounded-xl bg-[#EAF0F4] p-3"
                 >
                   <div
-                    class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white text-sm font-bold text-[#26667F] shadow-sm"
+                    class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white text-sm font-bold text-[#315D78] shadow-sm"
                   >
                     B
                   </div>
                   <div class="min-w-0 flex-1">
-                    <p class="text-xs font-semibold text-[#124170]">
+                    <p class="text-xs font-semibold text-[#20384D]">
                       Sains & Fisika
                     </p>
-                    <p class="mt-1 text-[11px] leading-4 text-[#6F8B95]">
+                    <p class="mt-1 text-[11px] leading-4 text-[#637587]">
                       Rak B-02, B-14 · Lantai 2
                     </p>
                   </div>
                 </div>
 
                 <div
-                  class="flex items-center gap-3 rounded-xl bg-[#E2F9EC] p-3"
+                  class="flex items-center gap-3 rounded-xl bg-[#EAF0F4] p-3"
                 >
                   <div
-                    class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white text-sm font-bold text-[#26667F] shadow-sm"
+                    class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white text-sm font-bold text-[#315D78] shadow-sm"
                   >
                     C
                   </div>
                   <div class="min-w-0 flex-1">
-                    <p class="text-xs font-semibold text-[#124170]">
+                    <p class="text-xs font-semibold text-[#20384D]">
                       Sastra & Klasik
                     </p>
-                    <p class="mt-1 text-[11px] leading-4 text-[#6F8B95]">
+                    <p class="mt-1 text-[11px] leading-4 text-[#637587]">
                       Rak C-08 · Lantai 1
                     </p>
                   </div>
@@ -772,14 +754,14 @@ onBeforeUnmount(() => {
 
             <!-- Informasi siswa -->
             <section
-              class="flex flex-col gap-2 rounded-xl bg-[#D7EEE1] p-5"
+              class="flex flex-col gap-2 rounded-xl bg-[#DFE8ED] p-5"
             >
-              <div class="flex items-center gap-2 text-[#124170]">
+              <div class="flex items-center gap-2 text-[#20384D]">
                 <span class="material-symbols-outlined">school</span>
                 <h2 class="text-sm font-semibold">Informasi Siswa</h2>
               </div>
 
-              <p class="text-xs leading-5 text-[#6F8B95]">
+              <p class="text-xs leading-5 text-[#637587]">
                 Pengajuan peminjaman dan antrean buku mengikuti prosedur
                 perpustakaan. Konfirmasikan ketersediaan kepada petugas
                 sebelum mengambil buku.
@@ -787,7 +769,7 @@ onBeforeUnmount(() => {
 
               <RouterLink
                 to="/my-library"
-                class="mt-1 inline-flex items-center gap-1 self-start text-xs font-semibold text-[#26667F] transition-colors hover:text-[#124170]"
+                class="mt-1 inline-flex items-center gap-1 self-start text-xs font-semibold text-[#315D78] transition-colors hover:text-[#20384D]"
               >
                 Lihat Perpustakaanku
                 <span class="material-symbols-outlined text-base">
@@ -811,7 +793,7 @@ onBeforeUnmount(() => {
     >
       <div
         v-if="showClearDialog"
-        class="fixed inset-0 z-[80] flex items-center justify-center bg-[#0c1f17]/40 p-4 backdrop-blur-sm"
+        class="fixed inset-0 z-[80] flex items-center justify-center bg-[#293A49]/40 p-4 backdrop-blur-sm"
         @click.self="showClearDialog = false"
         @keydown.esc="showClearDialog = false"
       >
@@ -831,12 +813,12 @@ onBeforeUnmount(() => {
 
           <h2
             id="clear-dialog-title"
-            class="mt-4 text-lg font-bold text-[#124170]"
+            class="mt-4 text-lg font-bold text-[#20384D]"
           >
             Hapus semua bookmark?
           </h2>
 
-          <p class="mt-2 text-sm leading-6 text-[#6F8B95]">
+          <p class="mt-2 text-sm leading-6 text-[#637587]">
             Semua {{ totalBooks }} buku akan dihapus dari daftar bookmark pada
             halaman ini. Tindakan ini tidak dapat dibatalkan.
           </p>
@@ -844,7 +826,7 @@ onBeforeUnmount(() => {
           <div class="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
             <button
               type="button"
-              class="rounded-xl bg-[#E2F9EC] px-4 py-2.5 text-xs font-semibold text-[#26667F] transition-colors hover:bg-[#D7EEE1]"
+              class="rounded-xl bg-[#EAF0F4] px-4 py-2.5 text-xs font-semibold text-[#315D78] transition-colors hover:bg-[#DFE8ED]"
               @click="showClearDialog = false"
             >
               Batal
@@ -862,24 +844,5 @@ onBeforeUnmount(() => {
       </div>
     </Transition>
 
-    <StudentFooter />
-  </div>
+  </StudentLayout>
 </template>
-
-<style scoped>
-.material-symbols-outlined {
-  font-family: 'Material Symbols Outlined';
-  font-weight: normal;
-  font-style: normal;
-  font-size: 24px;
-  line-height: 1;
-  letter-spacing: normal;
-  text-transform: none;
-  display: inline-block;
-  white-space: nowrap;
-  word-wrap: normal;
-  direction: ltr;
-  -webkit-font-feature-settings: 'liga';
-  -webkit-font-smoothing: antialiased;
-}
-</style>

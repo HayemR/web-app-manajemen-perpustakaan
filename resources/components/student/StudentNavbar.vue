@@ -5,7 +5,7 @@ import { useRoute, RouterLink } from 'vue-router'
 const route = useRoute()
 
 const navItems = [
-  { name: 'Home', path: '/vue', icon: 'home' },
+  { name: 'Home', path: '/home', icon: 'home' },
   { name: 'My Library', path: '/my-library', icon: 'local_library' },
   { name: 'Bookmarks', path: '/bookmarks', icon: 'bookmark' },
   { name: 'Scan', path: '/scan', icon: 'qr_code_scanner' },
@@ -169,25 +169,23 @@ onBeforeUnmount(() => {
       <!-- LOGO -->
       <div class="flex min-w-0 items-center gap-5">
         <RouterLink
-          to="/vue"
+          to="/home"
           class="flex shrink-0 items-center gap-2"
         >
-          <div
-            class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#26667F] text-white shadow-sm"
-          >
-            <span class="material-symbols-outlined">
-              local_library
-            </span>
-          </div>
+          <img
+            src="/images/image-logo.svg"
+            alt="Diginesh"
+            class="h-10 w-10 object-contain"
+          />
 
           <div class="hidden flex-col sm:flex">
             <span
-              class="text-[16px] font-semibold tracking-tight text-[#124170]"
+              class="text-[16px] font-semibold tracking-tight text-[#20384D]"
             >
               Diginesh
             </span>
 
-            <span class="text-[11px] font-semibold text-[#6F8B95]">
+            <span class="text-[11px] font-semibold text-[#637587]">
               School Library
             </span>
           </div>
@@ -202,8 +200,8 @@ onBeforeUnmount(() => {
             class="flex items-center gap-1.5 rounded-xl px-3 py-2 text-[14px] font-semibold transition-colors"
             :class="
               isActive(item.path)
-                ? 'bg-[#E2F9EC] text-[#124170] shadow-sm'
-                : 'text-[#6F8B95] hover:bg-[#E2F9EC] hover:text-[#124170]'
+                ? 'bg-[#EAF0F4] text-[#20384D] shadow-sm'
+                : 'text-[#637587] hover:bg-[#EAF0F4] hover:text-[#20384D]'
             "
           >
             <span class="material-symbols-outlined text-[18px]">
@@ -219,10 +217,10 @@ onBeforeUnmount(() => {
       <div class="flex shrink-0 items-center gap-2 md:gap-3">
         <!-- SEARCH -->
         <div
-          class="hidden h-10 w-64 items-center gap-2 rounded-xl border border-[#CFE5D8] bg-white px-3 lg:flex"
+          class="hidden h-10 w-64 items-center gap-2 rounded-xl border border-[#D4DEE5] bg-white px-3 lg:flex"
         >
           <span
-            class="material-symbols-outlined shrink-0 text-[20px] text-[#6F8B95]"
+            class="material-symbols-outlined shrink-0 text-[20px] text-[#637587]"
           >
             search
           </span>
@@ -231,11 +229,11 @@ onBeforeUnmount(() => {
             ref="searchInput"
             type="text"
             placeholder="Search books..."
-            class="min-w-0 flex-1 bg-transparent text-sm text-[#124170] outline-none placeholder:text-[#9AAEB5]"
+            class="min-w-0 flex-1 bg-transparent text-sm text-[#20384D] outline-none placeholder:text-[#9AAEB5]"
           />
 
           <kbd
-            class="shrink-0 whitespace-nowrap rounded-md border border-[#D7E8DE] bg-[#F4F8F6] px-2 py-1 text-[10px] font-semibold leading-none text-[#6F8B95]"
+            class="shrink-0 whitespace-nowrap rounded-md border border-[#D7E8DE] bg-[#F4F6F8] px-2 py-1 text-[10px] font-semibold leading-none text-[#637587]"
           >
             Ctrl K
           </kbd>
@@ -253,7 +251,7 @@ onBeforeUnmount(() => {
             aria-controls="notification-panel"
             :aria-expanded="isNotificationOpen"
             @click="toggleNotifications"
-            class="relative flex h-10 w-10 items-center justify-center rounded-xl text-[#6F8B95] transition hover:bg-[#E2F9EC] hover:text-[#124170]"
+            class="relative flex h-10 w-10 items-center justify-center rounded-xl text-[#637587] transition hover:bg-[#EAF0F4] hover:text-[#20384D]"
           >
             <span class="material-symbols-outlined text-[21px]">
               notifications
@@ -262,7 +260,7 @@ onBeforeUnmount(() => {
             <!-- Badge jumlah belum dibaca -->
             <span
               v-if="unreadCount > 0"
-              class="absolute right-1 top-1 flex h-[17px] min-w-[17px] items-center justify-center rounded-full border-2 border-white bg-[#67C090] px-1 text-[9px] font-bold text-[#124170]"
+              class="absolute right-1 top-1 flex h-[17px] min-w-[17px] items-center justify-center rounded-full border-2 border-white bg-[#67C090] px-1 text-[9px] font-bold text-[#20384D]"
             >
               {{ unreadCount > 9 ? '9+' : unreadCount }}
             </span>
@@ -288,11 +286,11 @@ onBeforeUnmount(() => {
                 class="flex items-center justify-between gap-3 border-b border-[#E4EEE8] px-4 py-4"
               >
                 <div>
-                  <h3 class="text-base font-bold text-[#124170]">
+                  <h3 class="text-base font-bold text-[#20384D]">
                     Notifikasi
                   </h3>
 
-                  <p class="mt-1 text-xs text-[#6F8B95]">
+                  <p class="mt-1 text-xs text-[#637587]">
                     {{ unreadCount }} belum dibaca
                   </p>
                 </div>
@@ -300,7 +298,7 @@ onBeforeUnmount(() => {
                 <button
                   v-if="unreadCount > 0"
                   type="button"
-                  class="relative z-10 cursor-pointer rounded-md px-2 py-1 text-right text-xs font-semibold text-[#26667F] transition hover:bg-[#E2F9EC] hover:text-[#124170]"
+                  class="relative z-10 cursor-pointer rounded-md px-2 py-1 text-right text-xs font-semibold text-[#315D78] transition hover:bg-[#EAF0F4] hover:text-[#20384D]"
                   @click.stop="markAllAsRead"
                 >
                   Tandai semua dibaca
@@ -320,11 +318,11 @@ onBeforeUnmount(() => {
                     notifications_off
                   </span>
 
-                  <p class="mt-2 text-sm font-semibold text-[#124170]">
+                  <p class="mt-2 text-sm font-semibold text-[#20384D]">
                     Belum ada notifikasi
                   </p>
 
-                  <p class="mt-1 text-xs text-[#6F8B95]">
+                  <p class="mt-1 text-xs text-[#637587]">
                     Notifikasi terbaru akan muncul di sini.
                   </p>
                 </div>
@@ -335,17 +333,17 @@ onBeforeUnmount(() => {
                   :key="item.id"
                   :to="item.path"
                   @click="markAsRead(item); isNotificationOpen = false"
-                  class="flex items-start gap-3 border-b border-[#EEF4F0] px-4 py-4 transition hover:bg-[#F4F8F6]"
+                  class="flex items-start gap-3 border-b border-[#EEF4F0] px-4 py-4 transition hover:bg-[#F4F6F8]"
                   :class="
-                    !item.read ? 'bg-[#F4F8F6]' : 'bg-white'
+                    !item.read ? 'bg-[#F4F6F8]' : 'bg-white'
                   "
                 >
                   <!-- Ikon -->
                   <div
-                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#E2F9EC]"
+                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#EAF0F4]"
                   >
                     <span
-                      class="material-symbols-outlined text-[21px] text-[#26667F]"
+                      class="material-symbols-outlined text-[21px] text-[#315D78]"
                     >
                       {{ item.icon }}
                     </span>
@@ -355,7 +353,7 @@ onBeforeUnmount(() => {
                   <div class="min-w-0 flex-1">
                     <div class="flex items-start gap-2">
                       <p
-                        class="flex-1 text-sm font-semibold text-[#124170]"
+                        class="flex-1 text-sm font-semibold text-[#20384D]"
                       >
                         {{ item.title }}
                       </p>
@@ -367,7 +365,7 @@ onBeforeUnmount(() => {
                     </div>
 
                     <p
-                      class="mt-1 text-xs leading-relaxed text-[#6F8B95]"
+                      class="mt-1 text-xs leading-relaxed text-[#637587]"
                     >
                       {{ item.message }}
                     </p>
@@ -385,7 +383,7 @@ onBeforeUnmount(() => {
               <div
                 class="border-t border-[#E4EEE8] bg-white px-4 py-3"
               >
-                <p class="text-center text-xs text-[#6F8B95]">
+                <p class="text-center text-xs text-[#637587]">
                   Menampilkan {{ notifications.length }} notifikasi
                 </p>
               </div>
@@ -400,25 +398,25 @@ onBeforeUnmount(() => {
             @click.stop="toggleProfile"
             :aria-expanded="isProfileOpen"
             aria-haspopup="true"
-            class="flex items-center gap-3 rounded-xl p-2 transition hover:bg-[#E2F9EC]"
+            class="flex items-center gap-3 rounded-xl p-2 transition hover:bg-[#EAF0F4]"
           >
             <div
-              class="flex h-10 w-10 items-center justify-center rounded-full bg-[#DDF4E7] font-bold text-[#124170]"
+              class="flex h-10 w-10 items-center justify-center rounded-full bg-[#F4F6F8] font-bold text-[#20384D]"
             >
               {{ profile.initials }}
             </div>
 
             <div class="hidden text-left sm:block">
-              <p class="text-sm font-semibold text-[#124170]">
+              <p class="text-sm font-semibold text-[#20384D]">
                 {{ profile.name }}
               </p>
-              <p class="text-xs text-[#6F8B95]">
+              <p class="text-xs text-[#637587]">
                 {{ profile.role }}
               </p>
             </div>
 
             <span
-              class="material-symbols-outlined text-[#6F8B95] transition"
+              class="material-symbols-outlined text-[#637587] transition"
               :class="{ 'rotate-180': isProfileOpen }"
             >
               expand_more
@@ -436,25 +434,25 @@ onBeforeUnmount(() => {
           >
             <div
               v-if="isProfileOpen"
-              class="absolute right-0 top-full z-50 mt-3 w-72 overflow-hidden rounded-2xl border border-[#DDF4E7] bg-white shadow-xl"
+              class="absolute right-0 top-full z-50 mt-3 w-72 overflow-hidden rounded-2xl border border-[#F4F6F8] bg-white shadow-xl"
             >
               <!-- HEADER PROFIL -->
-              <div class="bg-[#F4F8F6] p-5">
+              <div class="bg-[#F4F6F8] p-5">
                 <div class="flex items-center gap-3">
                   <div
-                    class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#DDF4E7] text-lg font-bold text-[#124170]"
+                    class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#F4F6F8] text-lg font-bold text-[#20384D]"
                   >
                     {{ profile.initials }}
                   </div>
 
                   <div class="min-w-0">
-                    <p class="truncate font-bold text-[#124170]">
+                    <p class="truncate font-bold text-[#20384D]">
                       {{ profile.name }}
                     </p>
-                    <p class="text-sm text-[#6F8B95]">
+                    <p class="text-sm text-[#637587]">
                       {{ profile.role }}
                     </p>
-                    <p class="truncate text-xs text-[#6F8B95]">
+                    <p class="truncate text-xs text-[#637587]">
                       {{ profile.email }}
                     </p>
                   </div>
@@ -466,7 +464,7 @@ onBeforeUnmount(() => {
                 <RouterLink
                   to="/account"
                   @click="closeProfile"
-                  class="flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold text-[#124170] transition hover:bg-[#E2F9EC]"
+                  class="flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold text-[#20384D] transition hover:bg-[#EAF0F4]"
                 >
                   <span class="flex items-center gap-3">
                     <span class="material-symbols-outlined text-[20px]">

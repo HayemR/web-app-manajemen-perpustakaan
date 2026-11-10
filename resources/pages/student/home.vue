@@ -1,7 +1,6 @@
 <script setup>
-import { computed, ref } from 'vue'
-import StudentNavbar from '../../components/student/StudentNavbar.vue'
-import StudentFooter from '../../components/student/StudentFooter.vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import StudentLayout from '../../components/student/StudentLayout.vue'
 
 const searchQuery = ref('')
 const selectedCategory = ref('all')
@@ -31,7 +30,6 @@ const books = [
       'https://lh3.googleusercontent.com/aida-public/AB6AXuAkZxldLXYoeS1vHjSSESBAhdgBKOVAhYdQ8C_LCWFRDIr-zxX3AYII0KjpV41TzggU9MK_daauNEWjS6x0l1cqnhpqVrOAwslqRcxVwJs3csRccL2TnVE2fGM7v_G-XrgpNX4qlyhcI7PLUHdZsu13dZF-z_PU7VEkyRI6f7tp0LmVdMcgLsnz_533uJT5OzYX5Fp6LGy2dnrv9Xt7KkpbIARKa_yZPYDrqmiqRf14bZW0ugETB66LNg',
     bookmarked: false,
   },
-
   {
     id: 2,
     title: 'To Kill a Mockingbird',
@@ -46,7 +44,6 @@ const books = [
       'https://lh3.googleusercontent.com/aida-public/AB6AXuAZb7pIlk76j-OoRZ0gz3X6ufptqUqC4U5-pNVE7yTcYdB2d2zND5IbYoG2WrfDrauZwaZ1pbvk9tHUvIdgcpoxIMiubrj-KzDf3ENFOEDqFFuTkOWeordbmx_J04NtoK4Tas1yupwtX5xiUu1OH7RNbcblqdKMGxI8mAdn2YyAeCWXioa1sxpvWnvhRVGZeXlrgPGHVpUlJnAC9COSIAqj89vvnl6571LF_TS7FK95gTkVr5vH3oEclQ',
     bookmarked: false,
   },
-
   {
     id: 3,
     title: 'A Brief History of Time',
@@ -61,7 +58,6 @@ const books = [
       'https://lh3.googleusercontent.com/aida-public/AB6AXuCn_tzD-224i4sY7so6IoAno8LpJbSBrsn5XvtIsYJWfa6DopPmB5N-2PpSbnLhSkQwWXoYLj4nxkQ3RKBiBp5TAY_dm3VHiW3Nm0cWI_hWswPKVSxH7b28HzHNqLvYKLcox4fgmjBOqUmdQGWmCAbhHN7rwnSiTxQSZhiJwYqIUNwyDOLp3i3t2_CDsftL53N5GZSdK_5Hu9wRD6v6JTAiLuXVlfkJnNEUv7nQo1XNJQ0NY2G5g1oqYQ',
     bookmarked: false,
   },
-
   {
     id: 4,
     title: 'The Great Gatsby',
@@ -92,7 +88,6 @@ const books = [
       'https://lh3.googleusercontent.com/aida-public/AB6AXuCdBnzNhv6eEX8R_GcwY8CShzZ_2Ixuo5gfr2SMmutg4cfWh7tNeKLVfuUU5WmFocNGWmk_vP7rkYy-n7t6K4t2IHb-M7Nbr4HrxJWOLhW6w0l78gmOR9aiEax43PlhXNysPIqkfMWk6V-XYifzdVDCY6pPWq-AVAb2dzOX7K0Vs9ft_BeS-jrllpNHWu3asJIdJ-AIK0UvIATM8JGIoQcRC3Nrx3d8_wrq_KrjZrOguI1gOv2wv3KQyw',
     bookmarked: false,
   },
-
   {
     id: 6,
     title: '1984',
@@ -182,7 +177,7 @@ function toggleBookmark(book) {
   book.bookmarked = !book.bookmarked
   if (book.bookmarked) {
     showToast(
-      'Buku Disimpan! 🔖',
+      'Buku Disimpan',
       `"${book.title}" telah disimpan ke bookmark kamu.`,
     )
   } else {
@@ -218,12 +213,17 @@ function handleKeyboardShortcut(event) {
   }
 }
 
-window.addEventListener('keydown', handleKeyboardShortcut)
+onMounted(() => {
+  window.addEventListener('keydown', handleKeyboardShortcut)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', handleKeyboardShortcut)
+  clearTimeout(toastTimer)
+})
 </script>
 <template>
-  <div
-    class="min-h-screen bg-[#DDF4E7]">
-    <StudentNavbar />
+  <StudentLayout>
     <!-- MAIN -->
     <main class="pt-20">
       <!-- TOAST -->
@@ -233,17 +233,17 @@ window.addEventListener('keydown', handleKeyboardShortcut)
           class="fixed bottom-6 right-6 z-[100] flex max-w-sm items-center gap-3 rounded-xl bg-white px-5 py-4 shadow-xl"
         >
           <div
-            class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#E8F8F0] text-[#006c45]"
+            class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#EDF3F5] text-[#006c45]"
           >
             <span class="material-symbols-outlined">
               check_circle
             </span>
           </div>
           <div class="flex flex-col">
-            <span class="text-sm font-semibold text-[#124170]">
+            <span class="text-sm font-semibold text-[#20384D]">
               {{ toast.title }}
             </span>
-            <span class="text-xs text-[#6F8B95]">
+            <span class="text-xs text-[#637587]">
               {{ toast.message }}
             </span>
           </div>
@@ -252,86 +252,20 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
       <!-- HERO -->
 
-      <section
+      <section class="w-full border-b border-[#D4DEE5] bg-white pb-8">
+        <div class="mx-auto max-w-[1200px] px-4 pt-8 md:px-5">
 
-        class="relative w-full overflow-hidden bg-white pb-8"
-
-      >
-
-        <div class="absolute inset-0">
-
-          <div
-
-            class="h-full w-full bg-cover bg-center opacity-20 blur-[0.5px]"
-
-            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAasCunP0oda7v31O3b5pgT-bJ6rOpZfXHN45ccMacBmUKbqLoSIdWXgsgYoWLON_4bnYEyHIDgPrngiawxl2C_i57jULtcBt6u8QNjtPxM-FnNwSs3HPlycNzZCZy0KX7HG8aVtalnhfOVMaEmiSjBv1Tkj79OGC6xBD9m-zUS_QhEq-hTRdDeoki6gk0-fvJfsLoVGbEjAEfwo3iLoQg3WbCM52b9TPgmO963fGrJ42qrJURnQAt59Q')"
-
-          ></div>
-
-          <div
-
-            class="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-[#DDF4E7]/80"
-
-          ></div>
-
-          <div
-
-            class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#DDF4E7] via-[#DDF4E7]/50 to-transparent"
-
-          ></div>
-
-        </div>
-
-        <div
-
-          class="relative z-10 mx-auto max-w-[1200px] px-4 pt-6 md:px-5"
-
-        >
-
-          <div
-
-            class="mb-6 flex flex-col justify-between gap-6 lg:flex-row lg:items-end"
-
-          >
-
-            <!-- Welcome -->
-
-            <div class="flex flex-col">
-
-              <div class="flex items-baseline gap-3">
-
-                <h1
-
-                  class="text-[32px] font-bold tracking-tight text-[#124170]"
-
-                >
-
-                  Halo, Adel!
-
-                  <span
-
-                    class="inline-block transition-transform hover:rotate-12"
-
-                  >
-
-                    👋
-
-                  </span>
-
-                </h1>
-
-                <p
-
-                  class="text-xl font-normal text-[#26667F]"
-
-                >
-
-                  Mau baca buku apa hari ini?
-
-                </p>
-
-              </div>
-
+          <div class="mb-6 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+            <div class="flex flex-col gap-1">
+              <p class="text-xs font-semibold uppercase tracking-[0.12em] text-[#315D78]">
+                Katalog perpustakaan
+              </p>
+              <h1 class="text-[30px] font-semibold tracking-tight text-[#20384D]">
+                Selamat datang, Adel
+              </h1>
+              <p class="text-sm text-[#637587]">
+                Temukan bacaan berikutnya di koleksi Diginesh.
+              </p>
             </div>
 
             <!-- Reading Status -->
@@ -346,7 +280,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                 <div
 
-                  class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#E2F9EC] text-[#004e65]"
+                  class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#EAF0F4] text-[#18394F]"
 
                 >
 
@@ -362,7 +296,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                   <span
 
-                    class="text-[11px] font-semibold uppercase tracking-wider text-[#6F8B95]"
+                    class="text-[11px] font-semibold uppercase tracking-wider text-[#637587]"
 
                   >
 
@@ -372,7 +306,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                   <span
 
-                    class="text-sm font-semibold text-[#124170]"
+                    class="text-sm font-semibold text-[#20384D]"
 
                   >
 
@@ -384,13 +318,13 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
               </div>
 
-              <div class="h-8 w-px bg-[#C2E2D4]"></div>
+              <div class="h-8 w-px bg-[#D4DEE5]"></div>
 
               <div class="flex items-center gap-2">
 
                 <div
 
-                  class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#E8F8F0] text-[#006c45]"
+                  class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#EDF3F5] text-[#006c45]"
 
                 >
 
@@ -406,7 +340,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                   <span
 
-                    class="text-[11px] font-semibold uppercase tracking-wider text-[#6F8B95]"
+                    class="text-[11px] font-semibold uppercase tracking-wider text-[#637587]"
 
                   >
 
@@ -448,7 +382,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
               <span
 
-                class="material-symbols-outlined mr-3 text-xl text-[#26667F]"
+                class="material-symbols-outlined mr-3 text-xl text-[#315D78]"
 
               >
 
@@ -466,7 +400,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                 placeholder="Cari berdasarkan judul, penulis, genre, atau kode buku..."
 
-                class="w-full bg-transparent text-sm text-[#124170] outline-none placeholder:text-[#6F8B95]"
+                class="w-full bg-transparent text-sm text-[#20384D] outline-none placeholder:text-[#637587]"
 
               />
 
@@ -474,7 +408,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                 @click="focusSearch"
 
-                class="hidden items-center gap-1 rounded bg-[#E2F9EC] px-2 py-1 text-[11px] text-[#6F8B95] md:flex"
+                class="hidden items-center gap-1 rounded bg-[#EAF0F4] px-2 py-1 text-[11px] text-[#637587] md:flex"
 
               >
 
@@ -494,7 +428,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
               <button
 
-                class="flex h-10 items-center gap-1 rounded-lg bg-[#E2F9EC] px-4 text-[13px] font-semibold text-[#26667F] transition hover:bg-[#D1E8DB]"
+                class="flex h-10 items-center gap-1 rounded-lg bg-[#EAF0F4] px-4 text-[13px] font-semibold text-[#315D78] transition hover:bg-[#D1E8DB]"
 
               >
 
@@ -512,7 +446,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                 @click="focusSearch"
 
-                class="flex h-10 items-center gap-1 rounded-lg bg-[#004e65] px-5 text-[13px] font-semibold text-white shadow-sm transition hover:bg-[#26667f] active:scale-95"
+                class="flex h-10 items-center gap-1 rounded-lg bg-[#18394F] px-5 text-[13px] font-semibold text-white shadow-sm transition hover:bg-[#315d78] active:scale-95"
 
               >
 
@@ -540,7 +474,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
             <span
 
-              class="whitespace-nowrap font-semibold text-[#124170]"
+              class="whitespace-nowrap font-semibold text-[#20384D]"
 
             >
 
@@ -552,7 +486,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
               @click="applySearchTag('Carl Sagan')"
 
-              class="whitespace-nowrap rounded-full bg-white/70 px-3 py-1 text-[#26667F] transition hover:bg-white"
+              class="whitespace-nowrap rounded-full bg-white/70 px-3 py-1 text-[#315D78] transition hover:bg-white"
 
             >
 
@@ -564,7 +498,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
               @click="applySearchTag('Dune')"
 
-              class="whitespace-nowrap rounded-full bg-white/70 px-3 py-1 text-[#26667F] transition hover:bg-white"
+              class="whitespace-nowrap rounded-full bg-white/70 px-3 py-1 text-[#315D78] transition hover:bg-white"
 
             >
 
@@ -576,7 +510,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
               @click="applySearchTag('Mockingbird')"
 
-              class="whitespace-nowrap rounded-full bg-white/70 px-3 py-1 text-[#26667F] transition hover:bg-white"
+              class="whitespace-nowrap rounded-full bg-white/70 px-3 py-1 text-[#315D78] transition hover:bg-white"
 
             >
 
@@ -588,7 +522,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
               @click="applySearchTag('History')"
 
-              class="whitespace-nowrap rounded-full bg-white/70 px-3 py-1 text-[#26667F] transition hover:bg-white"
+              class="whitespace-nowrap rounded-full bg-white/70 px-3 py-1 text-[#315D78] transition hover:bg-white"
 
             >
 
@@ -634,9 +568,9 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                 selectedCategory === category.value
 
-                  ? 'bg-[#26667f] text-white shadow-sm'
+                  ? 'bg-[#315d78] text-white shadow-sm'
 
-                  : 'bg-[#E2F9EC] text-[#26667F] hover:bg-[#D1E8DB]'
+                  : 'bg-[#EAF0F4] text-[#315D78] hover:bg-[#D1E8DB]'
 
               "
 
@@ -652,7 +586,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
             <label
 
-              class="flex cursor-pointer select-none items-center gap-2 rounded-full bg-[#E2F9EC] px-3 py-1.5"
+              class="flex cursor-pointer select-none items-center gap-2 rounded-full bg-[#EAF0F4] px-3 py-1.5"
 
             >
 
@@ -668,7 +602,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
               <span
 
-                class="text-[11px] font-semibold text-[#124170]"
+                class="text-[11px] font-semibold text-[#20384D]"
 
               >
 
@@ -682,7 +616,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
               v-model="sortBy"
 
-              class="rounded-full bg-[#E2F9EC] py-1.5 pl-3 pr-8 text-[13px] font-semibold text-[#124170] outline-none"
+              class="rounded-full bg-[#EAF0F4] py-1.5 pl-3 pr-8 text-[13px] font-semibold text-[#20384D] outline-none"
 
             >
 
@@ -738,7 +672,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                 <h2
 
-                  class="text-xl font-semibold text-[#124170]"
+                  class="text-xl font-semibold text-[#20384D]"
 
                 >
 
@@ -748,7 +682,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                 <span
 
-                  class="rounded-full bg-[#D7EEE1] px-2 py-0.5 text-[11px] font-semibold text-[#26667F]"
+                  class="rounded-full bg-[#DFE8ED] px-2 py-0.5 text-[11px] font-semibold text-[#315D78]"
 
                 >
 
@@ -762,7 +696,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                 href="#"
 
-                class="hidden items-center gap-1 text-[13px] font-semibold text-[#26667F] hover:text-[#124170] sm:flex"
+                class="hidden items-center gap-1 text-[13px] font-semibold text-[#315D78] hover:text-[#20384D] sm:flex"
 
               >
 
@@ -804,7 +738,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
 
                   <!-- COVER -->
-                  <div class="relative mb-4 aspect-[3/4] w-full overflow-hidden rounded-lg bg-[#E2F9EC]">
+                  <div class="relative mb-4 aspect-[3/4] w-full overflow-hidden rounded-lg bg-[#EAF0F4]">
                     <RouterLink :to="`/book/${book.id}`" class="block h-full w-full">
                       <img
                         :src="book.image"
@@ -813,7 +747,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
                       />
                     </RouterLink>
 
-                    <span class="absolute left-2.5 top-2.5 rounded bg-white/90 px-2 py-0.5 text-[11px] font-semibold text-[#124170] shadow-sm backdrop-blur-sm">
+                    <span class="absolute left-2.5 top-2.5 rounded bg-white/90 px-2 py-0.5 text-[11px] font-semibold text-[#20384D] shadow-sm backdrop-blur-sm">
                       {{ book.code }}
                     </span>
 
@@ -822,11 +756,11 @@ window.addEventListener('keydown', handleKeyboardShortcut)
                       type="button"
                       @click="toggleBookmark(book)"
                       :title="book.bookmarked ? 'Hapus bookmark' : 'Simpan ke bookmark'"
-                      class="absolute right-2.5 top-2.5 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-[#26667F] shadow-sm backdrop-blur-sm transition hover:bg-white"
+                      class="absolute right-2.5 top-2.5 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-[#315D78] shadow-sm backdrop-blur-sm transition hover:bg-white"
                     >
                       <span
                         class="material-symbols-outlined text-lg"
-                        :class="book.bookmarked ? 'text-[#004e65]' : ''"
+                        :class="book.bookmarked ? 'text-[#18394F]' : ''"
                         :style="{
                           fontVariationSettings: book.bookmarked ? '\'FILL\' 1' : '\'FILL\' 0',
                         }"
@@ -852,9 +786,9 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                         book.category === 'classics'
 
-                          ? 'bg-[#D3E3FF] text-[#1d4978]'
+                          ? 'bg-[#D3E3FF] text-[#315D78]'
 
-                          : 'bg-[#E8F8F0] text-[#006c45]'
+                          : 'bg-[#EDF3F5] text-[#006c45]'
 
                       "
 
@@ -872,7 +806,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                         book.status === 'available'
 
-                          ? 'text-[#6F8B95]'
+                          ? 'text-[#637587]'
 
                           : 'text-[#E55353]'
 
@@ -904,7 +838,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                   <h3
 
-                    class="line-clamp-1 text-base font-semibold text-[#124170] transition-colors group-hover:text-[#26667F]"
+                    class="line-clamp-1 text-base font-semibold text-[#20384D] transition-colors group-hover:text-[#315D78]"
 
                   >
 
@@ -912,7 +846,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                   </h3>
 
-                  <p class="mb-4 text-xs text-[#6F8B95]">
+                  <p class="mb-4 text-xs text-[#637587]">
 
                     {{ book.author }}
 
@@ -924,7 +858,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                 <div
 
-                  class="mt-auto flex items-center justify-between gap-2 border-t border-[#E2F9EC] pt-3"
+                  class="mt-auto flex items-center justify-between gap-2 border-t border-[#EAF0F4] pt-3"
 
                 >
 
@@ -972,7 +906,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                     @click="reserveBook(book)"
 
-                    class="h-9 rounded-lg bg-[#26667F] px-4 text-[13px] font-semibold text-white transition hover:bg-[#004e65] active:scale-95"
+                    class="h-9 rounded-lg bg-[#315D78] px-4 text-[13px] font-semibold text-white transition hover:bg-[#18394F] active:scale-95"
 
                   >
 
@@ -986,7 +920,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                     disabled
 
-                    class="h-9 cursor-not-allowed rounded-lg bg-[#E2F9EC] px-3 text-[13px] font-semibold text-[#6F8B95]"
+                    class="h-9 cursor-not-allowed rounded-lg bg-[#EAF0F4] px-3 text-[13px] font-semibold text-[#637587]"
 
                   >
 
@@ -1012,7 +946,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
               <span
 
-                class="material-symbols-outlined text-4xl text-[#6F8B95]"
+                class="material-symbols-outlined text-4xl text-[#637587]"
 
               >
 
@@ -1022,7 +956,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
               <h3
 
-                class="mt-3 text-lg font-semibold text-[#124170]"
+                class="mt-3 text-lg font-semibold text-[#20384D]"
 
               >
 
@@ -1030,7 +964,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
               </h3>
 
-              <p class="mt-1 text-sm text-[#6F8B95]">
+              <p class="mt-1 text-sm text-[#637587]">
 
                 Coba gunakan kata kunci atau kategori yang berbeda.
 
@@ -1042,7 +976,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
             <div
 
-              class="mt-4 flex flex-col items-center justify-between gap-4 rounded-xl bg-gradient-to-r from-white to-[#E2F9EC] p-6 shadow-sm md:flex-row"
+              class="mt-4 flex flex-col items-center justify-between gap-4 rounded-xl border border-[#D4DEE5] bg-white p-6 md:flex-row"
 
             >
 
@@ -1050,7 +984,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                 <div
 
-                  class="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[#004e65] text-white shadow-sm"
+                  class="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[#18394F] text-white shadow-sm"
 
                 >
 
@@ -1070,7 +1004,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                   <span
 
-                    class="text-[11px] font-semibold uppercase tracking-wider text-[#26667F]"
+                    class="text-[11px] font-semibold uppercase tracking-wider text-[#315D78]"
 
                   >
 
@@ -1080,7 +1014,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                   <h4
 
-                    class="text-lg font-semibold text-[#124170]"
+                    class="text-lg font-semibold text-[#20384D]"
 
                   >
 
@@ -1088,7 +1022,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                   </h4>
 
-                  <p class="text-xs text-[#6F8B95]">
+                  <p class="text-xs text-[#637587]">
 
                     32 buku referensi pilihan untuk mendukung tugas esai mandiri.
 
@@ -1100,7 +1034,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
               <button
 
-                class="h-11 whitespace-nowrap rounded-lg bg-[#004e65] px-5 text-[13px] font-semibold text-white shadow-sm transition hover:bg-[#26667f] active:scale-95"
+                class="h-11 whitespace-nowrap rounded-lg bg-[#18394F] px-5 text-[13px] font-semibold text-white shadow-sm transition hover:bg-[#315d78] active:scale-95"
 
               >
 
@@ -1136,7 +1070,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                   <span
 
-                    class="material-symbols-outlined text-[#26667F]"
+                    class="material-symbols-outlined text-[#315D78]"
 
                   >
 
@@ -1146,7 +1080,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                   <span
 
-                    class="text-sm font-semibold text-[#124170]"
+                    class="text-sm font-semibold text-[#20384D]"
 
                   >
 
@@ -1158,7 +1092,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                 <span
 
-                  class="rounded-full bg-[#E8F8F0] px-2 py-0.5 text-[11px] font-semibold text-[#006c45]"
+                  class="rounded-full bg-[#EDF3F5] px-2 py-0.5 text-[11px] font-semibold text-[#006c45]"
 
                 >
 
@@ -1172,7 +1106,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
               <div
 
-                class="flex flex-col items-center justify-center rounded-lg bg-[#E2F9EC] p-4 text-center"
+                class="flex flex-col items-center justify-center rounded-lg bg-[#EAF0F4] p-4 text-center"
 
               >
 
@@ -1184,7 +1118,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                   <svg
 
-                    class="h-8 w-full text-[#124170]"
+                    class="h-8 w-full text-[#20384D]"
 
                     viewBox="0 0 200 40"
 
@@ -1248,7 +1182,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                 <span
 
-                  class="mt-2 font-mono text-[11px] tracking-widest text-[#6F8B95]"
+                  class="mt-2 font-mono text-[11px] tracking-widest text-[#637587]"
 
                 >
 
@@ -1262,7 +1196,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                 v-if="selectedBook"
 
-                class="rounded-lg bg-[#E8F8F0] p-3"
+                class="rounded-lg bg-[#EDF3F5] p-3"
 
               >
 
@@ -1278,7 +1212,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                 <p
 
-                  class="mt-1 text-xs font-semibold text-[#124170]"
+                  class="mt-1 text-xs font-semibold text-[#20384D]"
 
                 >
 
@@ -1290,7 +1224,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
               <p
 
-                class="text-xs leading-relaxed text-[#6F8B95]"
+                class="text-xs leading-relaxed text-[#637587]"
 
               >
 
@@ -1302,7 +1236,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                 @click="openBarcode"
 
-                class="flex h-10 w-full items-center justify-center gap-1 rounded-lg bg-[#E2F9EC] text-[13px] font-semibold text-[#124170] transition hover:bg-[#D1E8DB]"
+                class="flex h-10 w-full items-center justify-center gap-1 rounded-lg bg-[#EAF0F4] text-[13px] font-semibold text-[#20384D] transition hover:bg-[#D1E8DB]"
 
               >
 
@@ -1334,7 +1268,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                 <span
 
-                  class="material-symbols-outlined text-[#26667F]"
+                  class="material-symbols-outlined text-[#315D78]"
 
                 >
 
@@ -1344,7 +1278,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                 <span
 
-                  class="text-sm font-semibold text-[#124170]"
+                  class="text-sm font-semibold text-[#20384D]"
 
                 >
 
@@ -1356,7 +1290,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
               <div
 
-                class="flex items-center justify-between rounded-lg bg-[#E8F8F0] p-2 text-[#006c45]"
+                class="flex items-center justify-between rounded-lg bg-[#EDF3F5] p-2 text-[#006c45]"
 
               >
 
@@ -1388,7 +1322,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                 <div class="flex justify-between py-1">
 
-                  <span class="text-[#6F8B95]">
+                  <span class="text-[#637587]">
 
                     Senin – Kamis
 
@@ -1404,7 +1338,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                 <div class="flex justify-between py-1">
 
-                  <span class="text-[#6F8B95]">
+                  <span class="text-[#637587]">
 
                     Jumat
 
@@ -1420,7 +1354,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                 <div class="flex justify-between py-1">
 
-                  <span class="text-[#6F8B95]">
+                  <span class="text-[#637587]">
 
                     Akhir Pekan
 
@@ -1456,7 +1390,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                   <div
 
-                    class="flex h-9 w-9 items-center justify-center rounded-lg bg-[#E2F9EC] text-[#26667F]"
+                    class="flex h-9 w-9 items-center justify-center rounded-lg bg-[#EAF0F4] text-[#315D78]"
 
                   >
 
@@ -1476,7 +1410,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                     <h4
 
-                      class="text-sm font-semibold text-[#124170]"
+                      class="text-sm font-semibold text-[#20384D]"
 
                     >
 
@@ -1486,7 +1420,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                     <p
 
-                      class="text-[11px] text-[#6F8B95]"
+                      class="text-[11px] text-[#637587]"
 
                     >
 
@@ -1500,7 +1434,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                 <span
 
-                  class="rounded-full bg-[#E2F9EC] px-2 py-0.5 text-[11px] font-semibold text-[#26667F]"
+                  class="rounded-full bg-[#EAF0F4] px-2 py-0.5 text-[11px] font-semibold text-[#315D78]"
 
                 >
 
@@ -1520,7 +1454,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                   <span
 
-                    class="material-symbols-outlined text-lg text-[#26667F]"
+                    class="material-symbols-outlined text-lg text-[#315D78]"
 
                   >
 
@@ -1532,7 +1466,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                     <span
 
-                      class="font-semibold text-[#124170]"
+                      class="font-semibold text-[#20384D]"
 
                     >
 
@@ -1540,7 +1474,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                     </span>
 
-                    <p class="text-[#6F8B95]">
+                    <p class="text-[#637587]">
 
                       Maksimal 3 buku dalam satu waktu.
 
@@ -1554,7 +1488,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                   <span
 
-                    class="material-symbols-outlined text-lg text-[#26667F]"
+                    class="material-symbols-outlined text-lg text-[#315D78]"
 
                   >
 
@@ -1566,7 +1500,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                     <span
 
-                      class="font-semibold text-[#124170]"
+                      class="font-semibold text-[#20384D]"
 
                     >
 
@@ -1574,7 +1508,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                     </span>
 
-                    <p class="text-[#6F8B95]">
+                    <p class="text-[#637587]">
 
                       Masa peminjaman standar 14 hari.
 
@@ -1588,7 +1522,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                   <span
 
-                    class="material-symbols-outlined text-lg text-[#26667F]"
+                    class="material-symbols-outlined text-lg text-[#315D78]"
 
                   >
 
@@ -1600,7 +1534,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                     <span
 
-                      class="font-semibold text-[#124170]"
+                      class="font-semibold text-[#20384D]"
 
                     >
 
@@ -1608,7 +1542,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                     </span>
 
-                    <p class="text-[#6F8B95]">
+                    <p class="text-[#637587]">
 
                       1 kali perpanjangan jika tidak ada antrean.
 
@@ -1622,7 +1556,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                   <span
 
-                    class="material-symbols-outlined text-lg text-[#26667F]"
+                    class="material-symbols-outlined text-lg text-[#315D78]"
 
                   >
 
@@ -1634,7 +1568,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                     <span
 
-                      class="font-semibold text-[#124170]"
+                      class="font-semibold text-[#20384D]"
 
                     >
 
@@ -1642,7 +1576,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                     </span>
 
-                    <p class="text-[#6F8B95]">
+                    <p class="text-[#637587]">
 
                       Kembalikan ke drop box atau meja perpustakaan.
 
@@ -1656,7 +1590,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                   <span
 
-                    class="material-symbols-outlined text-lg text-[#26667F]"
+                    class="material-symbols-outlined text-lg text-[#315D78]"
 
                   >
 
@@ -1668,7 +1602,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                     <span
 
-                      class="font-semibold text-[#124170]"
+                      class="font-semibold text-[#20384D]"
 
                     >
 
@@ -1676,7 +1610,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
 
                     </span>
 
-                    <p class="text-[#6F8B95]">
+                    <p class="text-[#637587]">
 
                       Laporkan buku yang hilang atau rusak.
 
@@ -1695,8 +1629,7 @@ window.addEventListener('keydown', handleKeyboardShortcut)
         </div>
       </div>
     </main>
-  </div>
-  <StudentFooter />
+  </StudentLayout>
 </template>
 
 <style scoped>
