@@ -189,16 +189,6 @@ async function logout() {
 
         <button
           type="button"
-          aria-label="Settings"
-          class="flex h-7 w-7 items-center justify-center rounded-md text-white/60 hover:bg-white/10 hover:text-white"
-        >
-          <span class="material-symbols-outlined text-[17px]">
-            settings
-          </span>
-        </button>
-
-        <button
-          type="button"
           aria-label="Log out"
           :disabled="isLoggingOut"
           class="flex h-7 w-7 items-center justify-center rounded-md text-white/60 transition hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
